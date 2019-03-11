@@ -4,8 +4,10 @@
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-    overflow: hidden;
+    overflow: auto;
     /* z-index: -100; */
+
+    padding-bottom: 100px;
 }
 
 .index {
@@ -23,6 +25,10 @@
     color: white;
 }
 
+/* nav {
+    position: fixed;
+} */
+
 .intro p {
     font-size: 20px;
 }
@@ -39,6 +45,105 @@ input {
     float: right;
 }
 
+.videoinfo {
+    margin-top : 10px;
+}
+
+.video, .lyrics{
+    padding: 5px;
+}
+
+iframe {
+    width: 100%;
+    height: 100%;
+    min-height: 262px;
+    height: 400px;
+}
+
+.fav, .fav:hover{
+    color: red;
+    /* padding: 3px; */
+}
+
+.video button {
+    margin : 3px;
+}
+
+textarea {
+    margin-top: 8px;
+    width: 100%;
+    text-align: center;
+    height: 400px;
+    float:right;
+    /* padding: 5px 20px 15px 20px; */
+    /* line-height: 1.5em; */
+    /* font-size: 1.3em; */
+    overflow: auto; 
+    resize: none;
+    color: white;
+    border-color: rgba(0, 0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.search input, #createNewPL input {
+    margin:0px;
+}
+
+.collections {
+    background-color: rgba(0, 0, 0, 0.5);
+
+}
+
+#playlist{
+    vertical-align: middle;
+    /* background-color: darkgray; */
+    height: 48px;
+    width: 100%;
+    margin: 0;
+    padding: 5px;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+#selectPlaylist {
+    display: inline-block;
+    margin-left: 20px;
+    width: 300px;
+}
+
+#delPlaylist {
+    display: inline;
+    margin-left: 5px;
+}
+
+#createNewPL {
+    display: inline;
+    float: right;
+}
+
+.card {
+    width: 18rem;
+    display: inline-block;
+    margin : 5px;
+}
+
+.card-columns {
+    column-count: 4;
+}
+
+.card-body{
+    padding:10px;
+}
+
+.card-btns {
+    position: absolute;
+    top: 8px;
+    right: 16px;
+    display: none;
+}
+
+.card-image img:hover + .card-btns, .card-btns:hover {
+    display: inline-block;
+}
 
 footer {
     background-color: black;
