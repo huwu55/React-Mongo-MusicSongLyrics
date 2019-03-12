@@ -8,7 +8,7 @@ export default (prop) => {
             <div className="navbar-collapse" id="navbarNav">
                 <div className="navbar-nav">
                     <a className="nav-link active" href="/home">Welcome, {prop.username}!<span className="sr-only">(current)</span></a>
-                    <a className="nav-link" href="/logout">Log Out<span className="sr-only">(current)</span></a>
+                    <a className="nav-link" href="/logout" onClick={() => prop.logout()}>Log Out<span className="sr-only">(current)</span></a>
                 </div>
             </div>
 

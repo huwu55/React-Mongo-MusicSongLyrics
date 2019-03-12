@@ -6,8 +6,8 @@ import Playlist from "../components/Playlist";
 
 
 class Home extends React.Component {
-    constructor(){
-        super();
+    constructor(props){
+        super(props);
 
         this.state = {
             songs : [
@@ -89,7 +89,7 @@ class Home extends React.Component {
     render() {
         return (
             <div>
-                <Navbar />
+                <Navbar logout={this.props.logout} />
                 <div className="container">
                     <Video video={this.state.songs[0].video} lyrics={this.state.songs[0].lyrics} />
                     <div className="row collections">
