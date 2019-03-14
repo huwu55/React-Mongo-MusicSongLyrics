@@ -9,34 +9,37 @@ export default {
     // logout : () => {
     //     return axios.get('/logout');
     // },
-    home : () => {
-        return axios.post('/home');
+    // home : () => {
+    //     return axios.post('/home');
+    // },
+    searchSong : (songInfo, token) => {
+        // console.log(songInfo);
+        // console.log(token);
+        // console.log({songInfo, token});
+        return axios.post("/search", {songInfo, token});
     },
-    searchSong : (songInfo) => {
-        return axios.post("/search", songInfo);
+    getFavorite : (token) => {
+        return axios.post('/favorite', token);
     },
-    getFavorite : () => {
-        return axios.post('/favorite');
+    addToFav : (songInfo, token) => {
+        return axios.post('/favorite/song', songInfo, token);
     },
-    addToFav : (songInfo) => {
-        return axios.post('/favorite/song', songInfo);
+    delFromFav : (id, token) => {
+        return axios.delete('/favorite/song', id, token);
     },
-    delFromFav : (id) => {
-        return axios.delete('/favorite/song', id);
+    createPlaylist : (plName, token) => {
+        return axios.post('/createPlaylist', plName, token);
     },
-    createPlaylist : (plName) => {
-        return axios.post('/createPlaylist', plName);
+    getPlaylist : (plName, token) => {
+        return axios.post('/playlist', plName, token);
     },
-    getPlaylist : (plName) => {
-        return axios.post('/playlist', plName);
+    deletePlaylist : (id, token) => {
+        return axios.delete('/playlist', id, token);
     },
-    deletePlaylist : (id) => {
-        return axios.delete('/playlist', id);
+    addToPlaylist : (plID, songInfo, token) => {
+        return axios.post('/playlist/song', {plID, songInfo}, token);
     },
-    addToPlaylist : (plID, songInfo) => {
-        return axios.post('/playlist/song', {plID, songInfo});
-    },
-    deleteFromPlaylist : (plID, songID) => {
-        return axios.delete('/playlist/song', {plID, songID});
+    deleteFromPlaylist : (plID, songID, token) => {
+        return axios.delete('/playlist/song', {plID, songID}, token);
     }
 };

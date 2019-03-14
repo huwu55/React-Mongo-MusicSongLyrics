@@ -8,7 +8,13 @@ var UserSchema = new Schema({
     password_hash : {
         type: String,
         required: true
-    }
+    },
+    Playlists : [
+        {
+            type: Schema.Types.ObjectId,
+            ref: "Playlist"
+        }
+    ]
 });
 
 var User = mongoose.model("User", UserSchema);

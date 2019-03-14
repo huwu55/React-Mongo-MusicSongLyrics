@@ -12,7 +12,7 @@ export default (prop) => {
                 </div>
             </div>
 
-            <form className="search form-inline">
+            <form className="search form-inline" onSubmit={prop.search}>
                 <input className="form-control mr-sm-2" type="search" placeholder="Artist"></input>
                 <input className="form-control mr-sm-2" type="search" placeholder="Song Name"></input>
                 <button className="btn btn-outline-secondary my-2 my-sm-0" type="submit">Search</button>

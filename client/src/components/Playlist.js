@@ -4,7 +4,7 @@ import Song from "./Song";
 export default (prop) => {
     return (
         <div className="card-columns">
-            {prop.songs.map((song)=>(
+            {(prop.songs) && prop.songs.map((song)=>(
                 <div className="card" key={song._id}>
                     <Song 
                         id={song._id}

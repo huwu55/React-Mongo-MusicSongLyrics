@@ -21,9 +21,9 @@ class App extends React.Component {
         };
     }
     
-    getToken = () => {
-        return localStorage.getItem('token');
-    }
+    // getToken = () => {
+    //     return localStorage.getItem('token');
+    // }
 
     signup = (event) => {
         event.preventDefault();
