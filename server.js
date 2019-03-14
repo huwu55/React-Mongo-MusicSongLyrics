@@ -121,8 +121,8 @@ app.post('/search', verifyToken, (req, res)=>{
     let songName = req.body.songInfo.songName;
 
     let songInfo = {
-        name : songName,
-        artist : artist,
+        name : "",
+        artist : "",
         thumbnail : "",
         video : "",
         lyrics : ""
@@ -146,7 +146,9 @@ app.post('/search', verifyToken, (req, res)=>{
             .then(response => {
                 //console.log(response);
                 let lyrics = response.data.result.track.text;
-                // console.log(lyrics);
+
+                songInfo.name = response.data.result.track.name;
+                songInfo.artist = response.data.result.artist.name;
                 songInfo.lyrics = lyrics;
                 res.json(songInfo);
             }).catch(err=>{
