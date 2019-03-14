@@ -12,7 +12,7 @@ class Home extends React.Component {
         super(props);
 
         this.state = {
-            username : localStorage.getItem('user'),
+            username : this.props.username,//localStorage.getItem('user'),
             song : {},
             favorites : []
         };
@@ -45,8 +45,8 @@ class Home extends React.Component {
                 });
             })
             .catch(error=>{
-                if(error.response.status == 403) alert("Invalid user token, please log in");
-                else alert("Something is wrong, try again");
+                // if(error.response.status == 403) alert("Invalid user token, please log in");
+                alert("Something is wrong, try again");
             });
     }
 
@@ -112,7 +112,7 @@ class Home extends React.Component {
 
     render() {
         if(!this.getToken()) return <Redirect to='/login' />
-
+        if(this.state.username == "") return <Redirect to='/login' />
         // if(this.state.favorites.length === 0)   return <Welcome username={this.state.username} />
 
         return (
