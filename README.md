@@ -1,7 +1,7 @@
 # React-Mongo-MusicSongLyrics
 
 ## Re-do MusicSongLyrics
-Deployed to Heroku
+Deployed to Heroku: https://react-mongo-musicsonglyrics.herokuapp.com/
 
 ### Project description
 For users to search songs and enjoy watching music videos and singing along with lyrics. Users can add/delete songs to Favorites under their username.
@@ -18,6 +18,7 @@ Old version:
 * use Firebase to store song info and playlists
 
 New version:
+* https://react-mongo-musicsonglyrics.herokuapp.com/
 * have a backend server: node express
 * have database: Use Mongoose for MongoDB 
     * DB Collections: Users and Songs

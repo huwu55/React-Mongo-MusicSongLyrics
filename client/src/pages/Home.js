@@ -45,8 +45,8 @@ class Home extends React.Component {
                 });
             })
             .catch(error=>{
-                console.log("error is here", error);
-                alert("Something is wrong, try again");
+                if(error.response.status == 403) alert("Invalid user token, please log in");
+                else alert("Something is wrong, try again");
             });
     }
 
@@ -65,8 +65,9 @@ class Home extends React.Component {
                 this.setState({song: res.data});
             })
             .catch(error=>{
-                console.log("error is here", error);
-                alert("No lyrics found.");
+                // console.log("error is here", error.response.status);
+                if(error.response.status == 403) alert("Invalid user token, please log in");
+                else alert("No lyrics found.");
             });
     }
 
@@ -83,8 +84,8 @@ class Home extends React.Component {
                 });
             })
             .catch(error=>{
-                console.log("error is here", error);
-                alert("Something is wrong, try again");
+                if(error.response.status == 403) alert("Invalid user token, please log in");
+                else alert("Something is wrong, try again");
             });
     }
 
@@ -104,8 +105,8 @@ class Home extends React.Component {
                 });
             })
             .catch(error => {
-                console.log("error is here", error);
-                alert("error on delete song");
+                if(error.response.status == 403) alert("Invalid user token, please log in");
+                else alert("Something is wrong, try again");
             });
     }
 
