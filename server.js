@@ -2,8 +2,8 @@ const express = require("express");
 const axios = require("axios");
 const mongoose = require("mongoose");
 const path = require("path");
-var bcrypt = require('bcryptjs');
-var jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 require("dotenv").config();
 
 const db = require("./models");
@@ -48,12 +48,11 @@ function verifyToken(req, res, next) {
     }
 }
 
-
 app.post('/signup', (req, res)=>{
 
     db.User.find({name: req.body.username})
         .then((user) => {
-            console.log("user from db", user);  
+            // console.log("user from db", user);  
             if (user.length > 0) {
                 return res.status(406).json({ error: 'Username already exists' });
             }
@@ -73,7 +72,7 @@ app.post('/signup', (req, res)=>{
                         name: req.body.username,
                         password_hash: hash
                     }, function(error, user) {
-                        console.log(user._id);
+                        // console.log(user._id);
                         // Log any errors
                         if (error) {
                             // console.log("error-inside", error);
@@ -116,10 +115,6 @@ app.post('/login', (req, res)=>{
         });
 });
 
-// app.post('/home', verifyToken, (req, res)=>{
-
-// });
-
 // search song by name and artist
 app.post('/search', verifyToken, (req, res)=>{
     let artist = req.body.songInfo.artist;
@@ -147,21 +142,17 @@ app.post('/search', verifyToken, (req, res)=>{
         songInfo.video = `https://www.youtube.com/embed/${result.id.videoId}`;
         songInfo.thumbnail = result.snippet.thumbnails.medium.url;
 
-        axios({
-            url: `/${artist}/${songName}?apikey=${lyricsAPI}`,
-            method: "get",
-            baseURL: "https://orion.apiseeds.com/api/music/lyric"
-        })
-        .then(response => {
-            //console.log(response);
-            let lyrics = response.data.result.track.text;
-            // console.log(lyrics);
-            songInfo.lyrics = lyrics;
-            res.json(songInfo);
-        }).catch(error=>{
-            console.log(error);
-            res.status(422).json(error);
-        });
+        axios.get(`https://orion.apiseeds.com/api/music/lyric/${artist}/${songName}?apikey=${lyricsAPI}`)
+            .then(response => {
+                //console.log(response);
+                let lyrics = response.data.result.track.text;
+                // console.log(lyrics);
+                songInfo.lyrics = lyrics;
+                res.json(songInfo);
+            }).catch(err=>{
+                res.status(404).send("error");
+                // res.json({error: "Lyrics not found"});
+            });
     }).catch(error => {
         console.log(error);
         res.status(422).json(error);
@@ -169,19 +160,92 @@ app.post('/search', verifyToken, (req, res)=>{
 });
 
 // // show all songs from favorite
-// app.post('/favorite', verifyToken, (req, res)=>{
-
-// });
+app.post('/favorite', verifyToken, (req, res)=>{
+    db.User.find({name: req.body.username})
+        .populate("favorites")
+        .then(user=>{
+            // console.log(user[0]);
+            res.json(user[0]);
+        })
+        .catch(err=>{
+            res.json(err);
+        });
+});
 
 // // add song to favorite
-// app.post('/favorite/song', verifyToken, (req, res)=>{
+app.post('/favorite/song', verifyToken, (req, res)=>{
+    // console.log(req.body.songInfo);
+    // console.log("username::::::", req.body.username);
 
-// });
+    db.Song.find(req.body.songInfo)
+        .then(result=>{
+            if(result.length > 0){
+                //$addToSet adds a value to an array unless the value is already present, in which case $addToSet does nothing to that array
+                db.User.findOneAndUpdate({name: req.body.username}, {"$addToSet": {"favorites": result[0]._id}}, { "new": true })
+                    .then(user=>{
+                        db.User.find({name: req.body.username})
+                            .populate("favorites")
+                            .then(user=>{
+                                res.json(user[0]);
+                            })
+                            .catch(err=>{
+                                res.json(err);
+                            });
+                    })
+                    .catch(err=>{
+                        console.log(err);
+                        res.json(err);
+                    });
+            }
+            else{
+                db.Song.create(req.body.songInfo)
+                    .then(songInfo=>{
+                        return db.User.findOneAndUpdate({name: req.body.username}, {"$push": {"favorites": songInfo._id}}, { "new": true });
+                    })
+                    .then(user=>{
+                        db.User.find({name: req.body.username})
+                            .populate("favorites")
+                            .then(user=>{
+                                res.json(user[0]);
+                            })
+                            .catch(err=>{
+                                res.json(err);
+                            });
+                    })
+                    .catch(err=>{
+                        res.json(err);
+                    });
+            }
+        })
+        .catch(error=>{
+            console.log(error);
+            res.status(400).json(error);
+        });
+    // res.status(422).json("testing");
+});
 
 // // remove song from favorite
-// app.delete('/favorite/song', verifyToken, (req, res)=>{
-
-// });
+app.delete('/favorite/song', verifyToken, (req, res)=>{
+    // console.log("hello world");
+    // console.log(req.body.username);
+    db.User.findOneAndUpdate({name: req.body.username}, {"$pull": {"favorites": req.body.id}}, { "new": true })
+        .then(user=>{
+            db.User.find({name: req.body.username})
+                .populate("favorites")
+                .then(user=>{
+                    // console.log(user[0]);
+                    res.json(user[0]);
+                })
+                .catch(err=>{
+                    console.log(err);
+                    res.json(err);
+                });
+        })
+        .catch(err=>{
+            console.log(err);
+            res.json(err);
+        });
+});
 
 // // create new playlist
 // app.post('/createPlaylist', verifyToken, (req, res)=>{

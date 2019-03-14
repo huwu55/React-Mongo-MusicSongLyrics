@@ -66,6 +66,7 @@ class App extends React.Component {
                 if (res.data.token){
                     this.setState({logged_in: true, username}, function(){
                       localStorage.setItem('token', res.data.token);
+                      localStorage.setItem('user', username);
                     });
 
                     //API.home()
@@ -84,6 +85,7 @@ class App extends React.Component {
         
         this.setState({logged_in: false}, function(){
             localStorage.removeItem('token');
+            localStorage.removeItem('user');
         });
     }
 
@@ -96,7 +98,7 @@ class App extends React.Component {
                         <Route exact path="/signup" render={()=> <Signup signed_up={this.state.signed_up} signup={this.signup} /> } />
                         <Route exact path="/login" render={()=> <Login logged_in={this.state.logged_in} login={this.login} /> } />
                         <Route exact path="/logout" component={Logout} />
-                        <Route exact path="/home" render={()=> <Home logged_in={this.state.logged_in} username={this.state.username} logout={this.logout} />} />
+                        <Route exact path="/home" render={()=> <Home logged_in={this.state.logged_in} logout={this.logout} />} />
                         {/* <Route component={NoMatch} /> */}
                     </Switch>
                     <Footer />

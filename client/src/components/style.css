@@ -121,14 +121,14 @@ textarea {
 }
 
 .card {
-    width: 18rem;
+    /* width: 1rem; */
     display: inline-block;
-    margin : 5px;
+    margin : 15px;
 }
-
+/* 
 .card-columns {
     column-count: 4;
-}
+} */
 
 .card-body{
     padding:10px;

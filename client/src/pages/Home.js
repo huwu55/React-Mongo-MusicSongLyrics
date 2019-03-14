@@ -12,86 +12,42 @@ class Home extends React.Component {
         super(props);
 
         this.state = {
-            username : props.username,
-            song : {
-                //         artist: "Adele",
-                //         name: "Someone Like you",
-                //         thumbnail: "https://i.ytimg.com/vi/hLQl3WQQoQ0/mqdefault.jpg",
-                //         video: "https://www.youtube.com/embed/hLQl3WQQoQ0",
-                //         lyrics: "I heard that you're settled down\nThat you found a girl and you're married now\nI heard that you\ndreams came true\nGuess she gave you things I didn't give to you\n\nOld friend, why are you so shy?\nAin't like you to hold back or hide from the light\nI hate to turn up out of the blue uninvited\nBut I couldn't stay away, I couldn't fight it\n\nI had hoped you'd see my face\nAnd that you'd be reminded definitely\nThat for me it isn't over"
-            },
-            playlist : 
-                {
-                    // _id:"sdofnwonfncoiswfe",
-                    // name: "Favorites",
-                    // songs: [
-                    //     {   _id: "sofowenfwoef",
-                    //         artist: "Adele",
-                    //         name: "Someone Like you",
-                    //         thumbnail: "https://i.ytimg.com/vi/hLQl3WQQoQ0/mqdefault.jpg",
-                    //         video: "https://www.youtube.com/embed/hLQl3WQQoQ0",
-                    //         lyrics: "I heard that you're settled down\nThat you found a girl and you're married now\nI heard that you\ndreams came true\nGuess she gave you things I didn't give to you\n\nOld friend, why are you so shy?\nAin't like you to hold back or hide from the light\nI hate to turn up out of the blue uninvited\nBut I couldn't stay away, I couldn't fight it\n\nI had hoped you'd see my face\nAnd that you'd be reminded definitely\nThat for me it isn't over"
-                    //     },
-                    //     {
-                    //         _id:"sojfisjf",
-                    //         artist: "Adele",
-                    //         name: "Someone Like you",
-                    //         thumbnail: "https://i.ytimg.com/vi/hLQl3WQQoQ0/mqdefault.jpg",
-                    //         video: "https://www.youtube.com/embed/hLQl3WQQoQ0",
-                    //         lyrics: "I heard that you're settled down\nThat you found a girl and you're married now\nI heard that you\ndreams came true\nGuess she gave you things I didn't give to you\n\nOld friend, why are you so shy?\nAin't like you to hold back or hide from the light\nI hate to turn up out of the blue uninvited\nBut I couldn't stay away, I couldn't fight it\n\nI had hoped you'd see my face\nAnd that you'd be reminded definitely\nThat for me it isn't over"
-                    //     },
-                    //     {
-                    //         _id:"sofnonsconc",
-                    //         artist: "Adele",
-                    //         name: "Someone Like you",
-                    //         thumbnail: "https://i.ytimg.com/vi/hLQl3WQQoQ0/mqdefault.jpg",
-                    //         video: "https://www.youtube.com/embed/hLQl3WQQoQ0",
-                    //         lyrics: "I heard that you're settled down\nThat you found a girl and you're married now\nI heard that you\ndreams came true\nGuess she gave you things I didn't give to you\n\nOld friend, why are you so shy?\nAin't like you to hold back or hide from the light\nI hate to turn up out of the blue uninvited\nBut I couldn't stay away, I couldn't fight it\n\nI had hoped you'd see my face\nAnd that you'd be reminded definitely\nThat for me it isn't over"
-                    //     },
-                    //     {
-                    //         _id:"sojfsijiisis",
-                    //         artist: "Adele",
-                    //         name: "Someone Like you",
-                    //         thumbnail: "https://i.ytimg.com/vi/hLQl3WQQoQ0/mqdefault.jpg",
-                    //         video: "https://www.youtube.com/embed/hLQl3WQQoQ0",
-                    //         lyrics: "I heard that you're settled down\nThat you found a girl and you're married now\nI heard that you\ndreams came true\nGuess she gave you things I didn't give to you\n\nOld friend, why are you so shy?\nAin't like you to hold back or hide from the light\nI hate to turn up out of the blue uninvited\nBut I couldn't stay away, I couldn't fight it\n\nI had hoped you'd see my face\nAnd that you'd be reminded definitely\nThat for me it isn't over"
-                    //     },
-                    //     {
-                    //         _id:"sojfsijiisisw",
-                    //         artist: "Adele",
-                    //         name: "Someone Like you",
-                    //         thumbnail: "https://i.ytimg.com/vi/hLQl3WQQoQ0/mqdefault.jpg",
-                    //         video: "https://www.youtube.com/embed/hLQl3WQQoQ0",
-                    //         lyrics: "I heard that you're settled down\nThat you found a girl and you're married now\nI heard that you\ndreams came true\nGuess she gave you things I didn't give to you\n\nOld friend, why are you so shy?\nAin't like you to hold back or hide from the light\nI hate to turn up out of the blue uninvited\nBut I couldn't stay away, I couldn't fight it\n\nI had hoped you'd see my face\nAnd that you'd be reminded definitely\nThat for me it isn't over"
-                    //     },
-                    //     {
-                    //         _id:"sojfsijiisisa",
-                    //         artist: "Adele",
-                    //         name: "Someone Like you",
-                    //         thumbnail: "https://i.ytimg.com/vi/hLQl3WQQoQ0/mqdefault.jpg",
-                    //         video: "https://www.youtube.com/embed/hLQl3WQQoQ0",
-                    //         lyrics: "I heard that you're settled down\nThat you found a girl and you're married now\nI heard that you\ndreams came true\nGuess she gave you things I didn't give to you\n\nOld friend, why are you so shy?\nAin't like you to hold back or hide from the light\nI hate to turn up out of the blue uninvited\nBut I couldn't stay away, I couldn't fight it\n\nI had hoped you'd see my face\nAnd that you'd be reminded definitely\nThat for me it isn't over"
-                    //     },
-                    //     {
-                    //         _id:"sojfsijiisisr",
-                    //         artist: "Adele",
-                    //         name: "Someone Like you",
-                    //         thumbnail: "https://i.ytimg.com/vi/hLQl3WQQoQ0/mqdefault.jpg",
-                    //         video: "https://www.youtube.com/embed/hLQl3WQQoQ0",
-                    //         lyrics: "I heard that you're settled down\nThat you found a girl and you're married now\nI heard that you\ndreams came true\nGuess she gave you things I didn't give to you\n\nOld friend, why are you so shy?\nAin't like you to hold back or hide from the light\nI hate to turn up out of the blue uninvited\nBut I couldn't stay away, I couldn't fight it\n\nI had hoped you'd see my face\nAnd that you'd be reminded definitely\nThat for me it isn't over"
-                    //     }
-                    // ]
-            }
+            username : localStorage.getItem('user'),
+            song : {},
+            favorites : []
         };
     }
     
-
-    // componentDidMount(){
-
-    // }
-    
     getToken = () => {
         return localStorage.getItem('token');
+    }
+
+    componentDidMount(){
+        API.getFavorite(this.state.username, this.getToken())
+            .then((response, error)=>{
+                if(error)   return alert("Something is wrong, try again");
+                let song = response.data.favorites[0];
+                if(song){
+                    song = {
+                        artist: song.artist,
+                        name: song.name,
+                        thumbnail: song.thumbnail,
+                        video: song.video,
+                        lyrics: song.lyrics
+                    };
+                    // console.log(song);
+                }
+                else song = {};
+                this.setState({
+                    username: response.data.name,
+                    song,
+                    favorites: [...response.data.favorites]
+                });
+            })
+            .catch(error=>{
+                console.log("error is here", error);
+                alert("Something is wrong, try again");
+            });
     }
 
     search = (event)=>{
@@ -105,29 +61,77 @@ class Home extends React.Component {
         if (artist == "" || songName == "") return alert("Must enter both artist and song name.");
 
         return API.searchSong({artist, songName}, this.getToken())
-            .then(res => {
-                console.log(res.data);
+            .then((res) => {
                 this.setState({song: res.data});
             })
-            .catch(err => {
-                console.log(err);
-                alert("No lyrics record");
-                //alert(err.response.data.error);
+            .catch(error=>{
+                console.log("error is here", error);
+                alert("No lyrics found.");
+            });
+    }
+
+    addToFav = () => {
+        if (!this.state.song.name)  return alert("Search a song first");
+
+        return API.addToFav(this.state.username, this.state.song, this.getToken())
+            .then((response, error)=>{
+                //console.log(response.data);
+                // if(error)   return alert("Something is wrong, try again");
+                this.setState({
+                    // username: response.data.name,
+                    favorites: [...response.data.favorites]
+                });
+            })
+            .catch(error=>{
+                console.log("error is here", error);
+                alert("Something is wrong, try again");
+            });
+    }
+
+    playThis = (song) =>{
+        // console.log(song);
+        this.setState({song});
+    }
+
+    deleteSong = (songid) => {
+        // console.log(songid);
+        return API.delFromFav(this.state.username, songid, this.getToken())
+            .then(response => {
+                // console.log(response.data);
+                this.setState({
+                    // username: response.data.name,
+                    favorites: [...response.data.favorites]
+                });
+            })
+            .catch(error => {
+                console.log("error is here", error);
+                alert("error on delete song");
             });
     }
 
     render() {
-        if(!this.props.logged_in) return <Redirect to='/login' />
-        
+        if(!this.getToken()) return <Redirect to='/login' />
+
+        // if(this.state.favorites.length === 0)   return <Welcome username={this.state.username} />
+
         return (
             <div>
                 <Navbar username={this.state.username} logout={this.props.logout} search={this.search} />
+
                 <div className="container">
                     {/* <Video video={this.state.song.video} lyrics={this.state.song.lyrics} /> */}
-                    <Video song={this.state.song} />
+                    <Video song={this.state.song} addToFav={this.addToFav} />
                     <div className="row collections">
-                        <PlaylistBar />
-                        <Playlist songs={this.state.playlist.songs} />
+                        {/* <PlaylistBar /> */}
+                        {this.state.favorites.length == 0 &&
+                            <div className="index intro col-12">
+                                <p>Looks like you don't have any favorite songs yet!</p>
+                                <p>Search artist and song name to get started</p>
+                            </div>
+                        }
+                        {this.state.favorites.length > 0 &&
+                            <Playlist playThis={this.playThis} deleteSong={this.deleteSong} songs={this.state.favorites} />
+                        }
                     </div>
                 </div>
             </div>

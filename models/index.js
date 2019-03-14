@@ -1,5 +1,5 @@
 module.exports = {
     User : require('./User'),
-    Playlist : require('./Playlist'),
+    // Playlist : require('./Playlist'),
     Song : require('./Song')
 };

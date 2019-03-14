@@ -9,10 +9,10 @@ var UserSchema = new Schema({
         type: String,
         required: true
     },
-    Playlists : [
+    favorites : [
         {
             type: Schema.Types.ObjectId,
-            ref: "Playlist"
+            ref: "Song"
         }
     ]
 });

@@ -3,7 +3,7 @@ import Song from "./Song";
 
 export default (prop) => {
     return (
-        <div className="card-columns">
+        <div>
             {(prop.songs) && prop.songs.map((song)=>(
                 <div className="card" key={song._id}>
                     <Song 
@@ -11,6 +11,10 @@ export default (prop) => {
                         name={song.name}
                         artist={song.artist}
                         thumbnail={song.thumbnail}
+                        lyrics={song.lyrics}
+                        video={song.video}
+                        playThis={prop.playThis}
+                        deleteSong={prop.deleteSong}
                     />
                 </div>
             ))}
