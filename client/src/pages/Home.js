@@ -1,4 +1,5 @@
 import React from "react";
+import { Redirect } from 'react-router-dom';
 import Navbar from "../components/Navbar-logedin";
 import Video from "../components/Video";
 import PlaylistBar from "../components/PlaylistBar";
@@ -11,7 +12,7 @@ class Home extends React.Component {
         super(props);
 
         this.state = {
-            username : "huwu55",
+            username : props.username,
             song : {
                 //         artist: "Adele",
                 //         name: "Someone Like you",
@@ -111,10 +112,13 @@ class Home extends React.Component {
             .catch(err => {
                 console.log(err);
                 alert("No lyrics record");
+                //alert(err.response.data.error);
             });
     }
 
     render() {
+        if(!this.props.logged_in) return <Redirect to='/login' />
+        
         return (
             <div>
                 <Navbar username={this.state.username} logout={this.props.logout} search={this.search} />

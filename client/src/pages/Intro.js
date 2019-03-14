@@ -3,6 +3,8 @@ import Navbar from "../components/Navbar";
 
 
 export default () => {
+    localStorage.removeItem('token');
+
     return (
         <div className="index">
             <Navbar />

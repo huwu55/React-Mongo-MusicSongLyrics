@@ -60,6 +60,8 @@ export default (prop)=>{
         return <Redirect to='/login' />
     }
 
+    localStorage.removeItem('token');
+
     return (
         <div className="index">
             <Navbar />

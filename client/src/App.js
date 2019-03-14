@@ -17,7 +17,8 @@ class App extends React.Component {
 
         this.state = {
             signed_up : false,
-            logged_in : false
+            logged_in : false,
+            username: ""
         };
     }
     
@@ -63,7 +64,7 @@ class App extends React.Component {
             .then(res=>{
                 // console.log(res.data.token);
                 if (res.data.token){
-                    this.setState({logged_in: true}, function(){
+                    this.setState({logged_in: true, username}, function(){
                       localStorage.setItem('token', res.data.token);
                     });
 
@@ -95,7 +96,7 @@ class App extends React.Component {
                         <Route exact path="/signup" render={()=> <Signup signed_up={this.state.signed_up} signup={this.signup} /> } />
                         <Route exact path="/login" render={()=> <Login logged_in={this.state.logged_in} login={this.login} /> } />
                         <Route exact path="/logout" component={Logout} />
-                        <Route exact path="/home" render={()=> <Home logout={this.logout} />} />
+                        <Route exact path="/home" render={()=> <Home logged_in={this.state.logged_in} username={this.state.username} logout={this.logout} />} />
                         {/* <Route component={NoMatch} /> */}
                     </Switch>
                     <Footer />

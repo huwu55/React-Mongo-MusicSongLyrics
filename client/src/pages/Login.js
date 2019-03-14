@@ -30,6 +30,8 @@ export default (prop)=>{
         return <Redirect to='/home' />
     }
 
+    localStorage.removeItem('token');
+
     return (
         <div className="index">
             <Navbar />
