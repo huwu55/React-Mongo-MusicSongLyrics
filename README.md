@@ -20,5 +20,6 @@ Old version:
 New version:
 * have a backend server: node express
 * have database: Use Mongoose for MongoDB 
+    * DB Collections: Users and Songs
 * user is able to create account with username and password - jwt authentication
 * use React for front-end
