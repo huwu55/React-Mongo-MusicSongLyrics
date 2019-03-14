@@ -24,3 +24,5 @@ New version:
     * DB Collections: Users and Songs
 * user is able to create account with username and password - jwt authentication
 * use React for front-end
+* future feature: allow users to create playlists
+    * additional DB Collections: Playlist
