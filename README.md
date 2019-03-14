@@ -1,9 +1,9 @@
 # React-Mongo-MusicSongLyrics
 
-##Re-do MusicSongLyrics
+## Re-do MusicSongLyrics
 Deployed to Heroku
 
-###Project description
+### Project description
 For users to search songs and enjoy watching music videos and singing along with lyrics. Users can add/delete songs to Favorites under their username.
 
 APIs:
