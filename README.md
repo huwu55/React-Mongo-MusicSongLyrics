@@ -13,7 +13,7 @@ APIs:
 Old version:
 * https://huwu55.github.io/MusicSongLyrics/
 * user is able to create username only, if users have the same username, they will be getting into the same account
-* * use local storage for storing username
+    * use local storage for storing username
 * require to fill out both artist name and song name to search
 * use Firebase to store song info and playlists
 
