@@ -38,6 +38,7 @@ function verifyToken(req, res, next) {
                 });
             } else {
                 req.decoded = decod;
+                // console.log(decod);
                 next();
             }
         });
@@ -99,16 +100,25 @@ app.post('/login', (req, res)=>{
             if (!bcrypt.compareSync(req.body.password, user[0].password_hash)) return res.status(401).json({ error: 'Incorrect password ' });
         
             let payload = {
-                _id: user._id,
-                username: user.name,
+                _id: user[0]._id,
+                username: user[0].name,
             };
 
-            let token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '4h' });
+            // console.log("payload", payload);
 
-            return res.json({
-                message: 'successfuly authenticated',
-                token: token
+            //let token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '4h' });
+
+            jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '4h' }, (err, token)=>{
+                return res.json({
+                    message: 'successfuly authenticated',
+                    token: token
+                });
             });
+
+            // return res.json({
+            //     message: 'successfuly authenticated',
+            //     token: token
+            // });
         })
         .catch(err =>{
             console.log("error", err);
@@ -163,6 +173,8 @@ app.post('/search', verifyToken, (req, res)=>{
 
 // // show all songs from favorite
 app.post('/favorite', verifyToken, (req, res)=>{
+    // console.log(req.docoded);
+    // console.log(req.decoded.username);
     db.User.find({name: req.body.username})
         .populate("favorites")
         .then(user=>{
