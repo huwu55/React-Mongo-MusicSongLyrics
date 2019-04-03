@@ -7,19 +7,17 @@ export default {
         return axios.post('/login', user);
     },
     searchSong : (songInfo, token) => {
-        // console.log(songInfo);
-        // console.log(token);
-        // console.log({songInfo, token});
         return axios.post("/search", {songInfo, token});
     },
-    getFavorite : (username, token) => {
-        return axios.post('/favorite', {username, token});
+    getFavorite : (token) => {
+        // console.log(token);
+        return axios.post('/favorite', {token});
     },
-    addToFav : (username, songInfo, token) => {
-        return axios.post('/favorite/song', {username, songInfo, token});
+    addToFav : (songInfo, token) => {
+        return axios.post('/favorite/song', {songInfo, token});
     },
-    delFromFav : (username, id, token) => {
-        return axios.delete('/favorite/song', {data: {username, id, token}});
+    delFromFav : (id, token) => {
+        return axios.delete('/favorite/song', {data: {id, token}});
     }
     // createPlaylist : (plName, token) => {
     //     return axios.post('/createPlaylist', plName, token);

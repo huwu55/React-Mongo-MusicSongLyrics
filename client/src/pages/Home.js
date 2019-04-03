@@ -19,13 +19,15 @@ class Home extends React.Component {
     }
     
     getToken = () => {
+        // console.log(localStorage.getItem('token'));
         return localStorage.getItem('token');
     }
 
     componentDidMount(){
-        API.getFavorite(this.state.username, this.getToken())
+        API.getFavorite(this.getToken())
             .then((response, error)=>{
-                if(error)   return alert("Something is wrong, try again");
+                if(error)   return alert("in-get-fav: Please log in");
+                // console.log(response.data);
                 let song = response.data.favorites[0];
                 if(song){
                     song = {
@@ -46,7 +48,7 @@ class Home extends React.Component {
             })
             .catch(error=>{
                 // if(error.response.status == 403) alert("Invalid user token, please log in");
-                alert("Something is wrong, try again");
+                alert("get-fav: Please log in");
             });
     }
 
@@ -74,7 +76,7 @@ class Home extends React.Component {
     addToFav = () => {
         if (!this.state.song.name)  return alert("Search a song first");
 
-        return API.addToFav(this.state.username, this.state.song, this.getToken())
+        return API.addToFav(this.state.song, this.getToken())
             .then((response, error)=>{
                 //console.log(response.data);
                 // if(error)   return alert("Something is wrong, try again");
@@ -85,7 +87,7 @@ class Home extends React.Component {
             })
             .catch(error=>{
                 if(error.response.status == 403) alert("Invalid user token, please log in");
-                else alert("Something is wrong, try again");
+                else alert("add-to-fav: Please log in");
             });
     }
 
@@ -96,7 +98,7 @@ class Home extends React.Component {
 
     deleteSong = (songid) => {
         // console.log(songid);
-        return API.delFromFav(this.state.username, songid, this.getToken())
+        return API.delFromFav(songid, this.getToken())
             .then(response => {
                 // console.log(response.data);
                 this.setState({
@@ -106,13 +108,13 @@ class Home extends React.Component {
             })
             .catch(error => {
                 if(error.response.status == 403) alert("Invalid user token, please log in");
-                else alert("Something is wrong, try again");
+                else alert("delete-song-from-fav: Please log in");
             });
     }
 
     render() {
         if(!this.getToken()) return <Redirect to='/login' />
-        if(this.state.username == "") return <Redirect to='/login' />
+        // if(this.state.username == "") return <Redirect to='/login' />
         // if(this.state.favorites.length === 0)   return <Welcome username={this.state.username} />
 
         return (

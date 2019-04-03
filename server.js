@@ -104,21 +104,12 @@ app.post('/login', (req, res)=>{
                 username: user[0].name,
             };
 
-            // console.log("payload", payload);
-
             //let token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '4h' });
 
             jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '4h' }, (err, token)=>{
-                return res.json({
-                    message: 'successfuly authenticated',
-                    token: token
-                });
+                return res.json({token});
             });
 
-            // return res.json({
-            //     message: 'successfuly authenticated',
-            //     token: token
-            // });
         })
         .catch(err =>{
             console.log("error", err);
@@ -129,7 +120,7 @@ app.post('/login', (req, res)=>{
 app.post('/search', verifyToken, (req, res)=>{
     let artist = req.body.songInfo.artist;
     let songName = req.body.songInfo.songName;
-
+    // console.log(req.decoded);
     let songInfo = {
         name : "",
         artist : "",
@@ -175,13 +166,14 @@ app.post('/search', verifyToken, (req, res)=>{
 app.post('/favorite', verifyToken, (req, res)=>{
     // console.log(req.docoded);
     // console.log(req.decoded.username);
-    db.User.find({name: req.body.username})
+    db.User.find({name: req.decoded.username})
         .populate("favorites")
         .then(user=>{
             // console.log(user[0]);
             res.json(user[0]);
         })
         .catch(err=>{
+            console.log(err);
             res.json(err);
         });
 });
@@ -195,9 +187,9 @@ app.post('/favorite/song', verifyToken, (req, res)=>{
         .then(result=>{
             if(result.length > 0){
                 //$addToSet adds a value to an array unless the value is already present, in which case $addToSet does nothing to that array
-                db.User.findOneAndUpdate({name: req.body.username}, {"$addToSet": {"favorites": result[0]._id}}, { "new": true })
+                db.User.findOneAndUpdate({name: req.decoded.username}, {"$addToSet": {"favorites": result[0]._id}}, { "new": true })
                     .then(user=>{
-                        db.User.find({name: req.body.username})
+                        db.User.find({name: req.decoded.username})
                             .populate("favorites")
                             .then(user=>{
                                 res.json(user[0]);
@@ -214,10 +206,10 @@ app.post('/favorite/song', verifyToken, (req, res)=>{
             else{
                 db.Song.create(req.body.songInfo)
                     .then(songInfo=>{
-                        return db.User.findOneAndUpdate({name: req.body.username}, {"$push": {"favorites": songInfo._id}}, { "new": true });
+                        return db.User.findOneAndUpdate({name: req.decoded.username}, {"$push": {"favorites": songInfo._id}}, { "new": true });
                     })
                     .then(user=>{
-                        db.User.find({name: req.body.username})
+                        db.User.find({name: req.decoded.username})
                             .populate("favorites")
                             .then(user=>{
                                 res.json(user[0]);
@@ -242,9 +234,9 @@ app.post('/favorite/song', verifyToken, (req, res)=>{
 app.delete('/favorite/song', verifyToken, (req, res)=>{
     // console.log("hello world");
     // console.log(req.body.username);
-    db.User.findOneAndUpdate({name: req.body.username}, {"$pull": {"favorites": req.body.id}}, { "new": true })
+    db.User.findOneAndUpdate({name: req.decoded.username}, {"$pull": {"favorites": req.body.id}}, { "new": true })
         .then(user=>{
-            db.User.find({name: req.body.username})
+            db.User.find({name: req.decoded.username})
                 .populate("favorites")
                 .then(user=>{
                     // console.log(user[0]);
