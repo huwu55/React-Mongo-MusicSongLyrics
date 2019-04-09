@@ -28,7 +28,7 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/musicSongLyrics
 
 function verifyToken(req, res, next) {
     // check header or url parameters or post parameters for token
-    // console.log(req.body);
+
     var token = req.body.token || req.query.token || req.headers['x-access-token'];
     if (token) {
         jwt.verify(token, process.env.JWT_SECRET, (err, decod) => {
@@ -38,7 +38,6 @@ function verifyToken(req, res, next) {
                 });
             } else {
                 req.decoded = decod;
-                // console.log(decod);
                 next();
             }
         });
@@ -68,15 +67,12 @@ app.post('/signup', (req, res)=>{
 
             bcrypt.genSalt(10, function(err, salt) {
                 bcrypt.hash(req.body.password, salt, function(err, hash) {
-                    // console.log("hash", hash);
                     db.User.create({
                         name: req.body.username,
                         password_hash: hash
                     }, function(error, user) {
-                        // console.log(user._id);
                         // Log any errors
                         if (error) {
-                            // console.log("error-inside", error);
                             res.send(error);
                         } else {
                             res.json({
@@ -104,8 +100,6 @@ app.post('/login', (req, res)=>{
                 username: user[0].name,
             };
 
-            //let token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '4h' });
-
             jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '4h' }, (err, token)=>{
                 return res.json({token});
             });
@@ -132,7 +126,6 @@ app.post('/userInfo', verifyToken, (req, res)=>{
 app.post('/search', verifyToken, (req, res)=>{
     let artist = req.body.songInfo.artist;
     let songName = req.body.songInfo.songName;
-    // console.log(req.decoded);
     let songInfo = {
         name : "",
         artist : "",
@@ -151,13 +144,11 @@ app.post('/search', verifyToken, (req, res)=>{
         }
     }).then(response => {
         let result = response.data.items[0];
-        // console.log(result);
         songInfo.video = `https://www.youtube.com/embed/${result.id.videoId}`;
         songInfo.thumbnail = result.snippet.thumbnails.medium.url;
 
         axios.get(`https://orion.apiseeds.com/api/music/lyric/${artist}/${songName}?apikey=${lyricsAPI}`)
             .then(response => {
-                //console.log(response);
                 let lyrics = response.data.result.track.text;
 
                 songInfo.name = response.data.result.track.name;
@@ -176,12 +167,10 @@ app.post('/search', verifyToken, (req, res)=>{
 
 // // show all songs from favorite
 app.post('/favorite', verifyToken, (req, res)=>{
-    // console.log(req.docoded);
-    // console.log(req.decoded.username);
+
     db.User.find({name: req.decoded.username})
         .populate("favorites")
         .then(user=>{
-            // console.log(user[0]);
             res.json(user[0]);
         })
         .catch(err=>{
@@ -192,8 +181,6 @@ app.post('/favorite', verifyToken, (req, res)=>{
 
 // // add song to favorite
 app.post('/favorite/song', verifyToken, (req, res)=>{
-    // console.log(req.body.songInfo);
-    // console.log("username::::::", req.body.username);
 
     db.Song.find(req.body.songInfo)
         .then(result=>{
@@ -239,19 +226,16 @@ app.post('/favorite/song', verifyToken, (req, res)=>{
             console.log(error);
             res.status(400).json(error);
         });
-    // res.status(422).json("testing");
 });
 
 // // remove song from favorite
 app.delete('/favorite/song', verifyToken, (req, res)=>{
-    // console.log("hello world");
-    // console.log(req.body.username);
+
     db.User.findOneAndUpdate({name: req.decoded.username}, {"$pull": {"favorites": req.body.id}}, { "new": true })
         .then(user=>{
             db.User.find({name: req.decoded.username})
                 .populate("favorites")
                 .then(user=>{
-                    // console.log(user[0]);
                     res.json(user[0]);
                 })
                 .catch(err=>{
@@ -271,15 +255,12 @@ app.post('/createPlaylist', verifyToken, (req, res)=>{
     let user = req.decoded.username;
     db.Playlist.create({name: plName})
         .then(pl=>{
-            // console.log(pl._id);
             return db.User.findOneAndUpdate({name: user}, {"$push": {"playlists": pl._id}}, { "new": true });
         })
         .then( u=>{
             db.User.find({name: user})
-                // .populate("favorites")
                 .populate("playlists")
                 .then(u => {
-                    // console.log(u[0]);
                     res.json(u[0]);
                 })
                 .catch(err => {
@@ -295,7 +276,6 @@ app.post('/createPlaylist', verifyToken, (req, res)=>{
 // select playlist and show songs
 app.post('/playlist', verifyToken, (req, res)=>{
     let plID = req.body.plID;
-    // let user = req.decoded.username;
     db.Playlist.find({_id: plID})
         .populate("songs")
         .then(playlist=>{
@@ -322,14 +302,13 @@ app.delete('/playlist', verifyToken, (req, res)=>{
         })
         .catch(err=>{
             res.json(err);
-        })
+        });
 });
 
 // add song to playlist
 app.post('/playlist/song', verifyToken, (req, res)=>{
     let plID = req.body.plID;
     let songInfo = req.body.songInfo;
-    // let user = req.decoded.username;
 
     db.Song.find(songInfo)
         .then(result=>{
@@ -387,7 +366,6 @@ app.delete('/playlist/song', verifyToken, (req, res)=>{
             db.Playlist.find({_id: plID})
                 .populate("songs")
                 .then(playlist=>{
-                    // console.log(user[0]);
                     res.json(playlist[0]);
                 })
                 .catch(err=>{

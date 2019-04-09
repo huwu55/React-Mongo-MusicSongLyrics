@@ -25,7 +25,6 @@ class Home extends React.Component {
     }
     
     getToken = () => {
-        // console.log(localStorage.getItem('token'));
         return localStorage.getItem('token');
     }
 
@@ -33,7 +32,6 @@ class Home extends React.Component {
 
         API.userInfo(this.getToken())
             .then(res=>{
-                //console.log(res.data);
                 let userInfo = res.data;
                 this.setState({
                     username:   userInfo.name,
@@ -43,7 +41,7 @@ class Home extends React.Component {
             })
             .catch(err=>{
                 console.log(err);
-            })
+            });
 
     }
 
@@ -62,7 +60,6 @@ class Home extends React.Component {
                 this.setState({song: res.data});
             })
             .catch(error=>{
-                // console.log("error is here", error.response.status);
                 if(error.response.status === 403) alert("Invalid user token, please log in");
                 else alert("No lyrics found.");
             });
@@ -72,11 +69,9 @@ class Home extends React.Component {
         if (!this.state.song.name)  return alert("Search a song first");
 
         return API.addToFav(this.state.song, this.getToken())
-            .then((response, error)=>{
-                //console.log(response.data);
-                // if(error)   return alert("Something is wrong, try again");
+            .then((response)=>{
+
                 this.setState({
-                    // username: response.data.name,
                     favorites: [...response.data.favorites],
                 });
                 if (this.state.selectedPlaylist.name === "Favorite")
@@ -94,20 +89,16 @@ class Home extends React.Component {
     }
 
     playThis = (song) =>{
-        // console.log(song);
         this.setState({song});
     }
 
     deleteSong = (songid) => {
-        // console.log(songid);
         let plName = this.state.selectedPlaylist.name;
 
         if (this.state.selectedPlaylist.name === "Favorite")
             return API.delFromFav(songid, this.getToken())
                 .then(response => {
-                    // console.log(response.data);
                     this.setState({
-                        // username: response.data.name,
                         favorites: [...response.data.favorites],
                         selectedPlaylist : {
                             name: "Favorite",
@@ -139,7 +130,6 @@ class Home extends React.Component {
         let selectedPlaylist = e.target.value;
         console.log(selectedPlaylist);
         if (selectedPlaylist === "None"|| selectedPlaylist==="Favorite"){
-            // alert(selectedPlaylist);
             this.setState({isPlaylist: false});
             if(selectedPlaylist==="Favorite"){
                 this.setState({
@@ -155,11 +145,8 @@ class Home extends React.Component {
             }});
         } 
         else{
-            //alert(selectedPlaylist);
-            //this.setState({selectedPlaylist:[]});
             API.getPlaylist(selectedPlaylist, this.getToken())
                 .then(res=>{
-                    //console.log(res.data[0].songs);
                     this.setState({
                         isPlaylist: true,
                         selectedPlaylist: {
@@ -171,8 +158,7 @@ class Home extends React.Component {
                 .catch(err=>{
                     if(err.response.status === 403) alert("Invalid user token, please log in");
                     else alert("select playlist: Please log in");
-                })
-            //this.setState({isPlaylist: true});
+                });
         }
     }
 
@@ -180,11 +166,9 @@ class Home extends React.Component {
         event.preventDefault();
 
         let playlistName = event.target.children[0].value.trim();
-        // console.log(playlistName);
 
         API.createPlaylist(playlistName, this.getToken())
             .then(res=>{
-                //console.log(res.data);
                 alert("Playlist created: "+playlistName);
                 this.setState({
                     playlists: res.data.playlists
@@ -195,8 +179,7 @@ class Home extends React.Component {
             });
     }
 
-    addToPlaylist = (pid, pName) =>{
-        //alert(pid + pName);
+    addToPlaylist = (pid) =>{
         if (!this.state.song.name)  return alert("Search a song first");
 
         return API.addToPlaylist(pid, this.state.song, this.getToken())
@@ -217,7 +200,6 @@ class Home extends React.Component {
     }
 
     deletePlaylist = () =>{
-        //console.log(this.state.selectedPlaylist.name);
         API.deletePlaylist(this.state.selectedPlaylist.name, this.getToken())
             .then(res=>{
                 console.log(res.data);
