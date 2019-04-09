@@ -14,6 +14,12 @@ var UserSchema = new Schema({
             type: Schema.Types.ObjectId,
             ref: "Song"
         }
+    ],
+    playlists : [
+        {
+            type: Schema.Types.ObjectId,
+            ref: "Playlist"
+        }
     ]
 });
 

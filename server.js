@@ -116,6 +116,18 @@ app.post('/login', (req, res)=>{
         });
 });
 
+app.post('/userInfo', verifyToken, (req, res)=>{
+    db.User.find({name: req.decoded.username})
+        .populate("favorites")
+        .populate("playlists")
+        .then(u=>{
+            res.json(u[0]);
+        })
+        .catch(err=>{
+            console.log(err);
+        });
+});
+
 // search song by name and artist
 app.post('/search', verifyToken, (req, res)=>{
     let artist = req.body.songInfo.artist;
@@ -253,30 +265,141 @@ app.delete('/favorite/song', verifyToken, (req, res)=>{
         });
 });
 
-// // create new playlist
-// app.post('/createPlaylist', verifyToken, (req, res)=>{
+// create new playlist
+app.post('/createPlaylist', verifyToken, (req, res)=>{
+    let plName = req.body.plName;
+    let user = req.decoded.username;
+    db.Playlist.create({name: plName})
+        .then(pl=>{
+            // console.log(pl._id);
+            return db.User.findOneAndUpdate({name: user}, {"$push": {"playlists": pl._id}}, { "new": true });
+        })
+        .then( u=>{
+            db.User.find({name: user})
+                // .populate("favorites")
+                .populate("playlists")
+                .then(u => {
+                    // console.log(u[0]);
+                    res.json(u[0]);
+                })
+                .catch(err => {
+                    console.log(err);
+                    res.json(err);
+                });
+        })
+        .catch(err => {
+            res.status(400).json(err);
+        });
+});
 
-// });
+// select playlist and show songs
+app.post('/playlist', verifyToken, (req, res)=>{
+    let plID = req.body.plID;
+    // let user = req.decoded.username;
+    db.Playlist.find({_id: plID})
+        .populate("songs")
+        .then(playlist=>{
+            res.json(playlist);
+        })
+        .catch(err=>{
+            // console.log(err);
+            res.json(err);
+        });
+});
 
-// // select playlist and show songs
-// app.post('/playlist', verifyToken, (req, res)=>{
+// delete playlist
+app.delete('/playlist', verifyToken, (req, res)=>{
+    let plID = req.body.plID;
+    let user = req.decoded.username;
+    db.User.findOneAndUpdate({name: user}, {"$pull": {"playlists": plID}}, { "new": true })
+        .populate("playlists")
+        .then(user => {
+            db.Playlist.findOneAndRemove({_id: plID}, err=> {
+                if (err) res.json(err);
 
-// });
+                res.json(user);
+            });
+        })
+        .catch(err=>{
+            res.json(err);
+        })
+});
 
-// // delete playlist
-// app.delete('/playlist', verifyToken, (req, res)=>{
+// add song to playlist
+app.post('/playlist/song', verifyToken, (req, res)=>{
+    let plID = req.body.plID;
+    let songInfo = req.body.songInfo;
+    // let user = req.decoded.username;
 
-// });
+    db.Song.find(songInfo)
+        .then(result=>{
+            if(result.length > 0){
+                //$addToSet adds a value to an array unless the value is already present, in which case $addToSet does nothing to that array
+                db.Playlist.findOneAndUpdate({_id: plID}, {"$addToSet": {"songs": result[0]._id}}, { "new": true })
+                    .then(playlist=>{
+                        db.Playlist.find({_id: plID})
+                            .populate("songs")
+                            .then(playlist=>{
+                                res.json(playlist[0]);
+                            })
+                            .catch(err=>{
+                                res.json(err);
+                            });
+                    })
+                    .catch(err=>{
+                        console.log(err);
+                        res.json(err);
+                    });
+            }
+            else{
+                db.Song.create(songInfo)
+                    .then(song=>{
+                        return db.Playlist.findOneAndUpdate({_id: plName}, {"$push": {"songs": song._id}}, { "new": true });
+                    })
+                    .then(pl=>{
+                        db.Playlist.find({_id: plName})
+                            .populate("songs")
+                            .then(playlist=>{
+                                res.json(playlist[0]);
+                            })
+                            .catch(err=>{
+                                res.json(err);
+                            });
+                    })
+                    .catch(err=>{
+                        res.json(err);
+                    });
+            }
+        })
+        .catch(error=>{
+            // console.log(error);
+            res.status(400).json(error);
+        });
+});
 
-// // add song to playlist
-// app.post('/playlist/song', verifyToken, (req, res)=>{
+// remove song from playlist
+app.delete('/playlist/song', verifyToken, (req, res)=>{
+    let plID = req.body.plID;
+    let songID = req.body.songID;
 
-// });
-
-// // remove song from playlist
-// app.delete('/playlist/song', verifyToken, (req, res)=>{
-
-// });
+    db.Playlist.findOneAndUpdate({_id: plID}, {"$pull": {"songs": songID}}, { "new": true })
+        .then(playlist=>{
+            db.Playlist.find({_id: plID})
+                .populate("songs")
+                .then(playlist=>{
+                    // console.log(user[0]);
+                    res.json(playlist[0]);
+                })
+                .catch(err=>{
+                    // console.log(err);
+                    res.json(err);
+                });
+        })
+        .catch(err=>{
+            // console.log(err);
+            res.json(err);
+        });
+});
 
 app.get("*", function(req, res) {
     res.sendFile(path.join(__dirname, "/client/build/index.html"));

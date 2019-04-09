@@ -6,6 +6,9 @@ export default {
     login : (user) => {
         return axios.post('/login', user);
     },
+    userInfo : (token)=>{
+        return axios.post('/userInfo', {token});
+    },
     searchSong : (songInfo, token) => {
         return axios.post("/search", {songInfo, token});
     },
@@ -18,20 +21,20 @@ export default {
     },
     delFromFav : (id, token) => {
         return axios.delete('/favorite/song', {data: {id, token}});
+    },
+    createPlaylist : (plName, token) => {
+        return axios.post('/createPlaylist', {plName, token});
+    },
+    getPlaylist : (plID, token) => {
+        return axios.post('/playlist', {plID, token});
+    },
+    deletePlaylist : (plID, token) => {
+        return axios.delete('/playlist', {data: {plID, token}});
+    },
+    addToPlaylist : (plID, songInfo, token) => {
+        return axios.post('/playlist/song', {plID, songInfo, token});
+    },
+    deleteFromPlaylist : (plID, songID, token) => {
+        return axios.delete('/playlist/song', {data: {plID, songID, token}});
     }
-    // createPlaylist : (plName, token) => {
-    //     return axios.post('/createPlaylist', plName, token);
-    // },
-    // getPlaylist : (plName, token) => {
-    //     return axios.post('/playlist', plName, token);
-    // },
-    // deletePlaylist : (id, token) => {
-    //     return axios.delete('/playlist', id, token);
-    // },
-    // addToPlaylist : (plID, songInfo, token) => {
-    //     return axios.post('/playlist/song', {plID, songInfo}, token);
-    // },
-    // deleteFromPlaylist : (plID, songID, token) => {
-    //     return axios.delete('/playlist/song', {plID, songID}, token);
-    // }
 };

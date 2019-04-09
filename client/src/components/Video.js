@@ -1,4 +1,5 @@
 import React from "react";
+import AddToPlaylist from "./AddToPlaylist";
 
 export default (prop) => {
     return (
@@ -8,7 +9,10 @@ export default (prop) => {
                 <button type="button" title="Add to Favorites" className="fav btn btn-light" onClick={()=>prop.addToFav()}>
                     <i className="fas fa-heart"></i>
                 </button>
-                {/* <button type="button" value="Add to Playlist" className="btn btn-dark"><i className="fas fa-book"></i> Add to the Selected Playlist</button> */}
+
+                <AddToPlaylist 
+                    playlists={prop.playlists}
+                    addToPlaylist={prop.addToPlaylist} />
             </div>
             <div className="col-4 lyrics">
                 <textarea rows="20" col="1" disabled readOnly value={prop.song.lyrics}></textarea>

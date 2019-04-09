@@ -36,7 +36,7 @@ class App extends React.Component {
         let passwordConf = inputs[2].value.trim();
         // console.log(username, password);
         if(username === "") alert("You need a username.");
-        else if (password == passwordConf){
+        else if (password === passwordConf){
             return API.signup({username, password})
                 .then((res) => {
                     alert("Successfully signed up!");
