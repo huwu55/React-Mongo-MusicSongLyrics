@@ -1,28 +1,34 @@
 # React-Mongo-MusicSongLyrics
 
-## Re-do MusicSongLyrics
-Deployed to Heroku: https://react-mongo-musicsonglyrics.herokuapp.com/
+Using Node Express to host For users to search songs, enjoy watching music videos, and sing along with lyrics. Users are be able to sign up and log in using their usernames and passwords. Users can manage their songs by adding/deleting songs to/from Favorites. Users can create and manage playlists as well.
 
-### Project description
-For users to search songs and enjoy watching music videos and singing along with lyrics. Users can add/delete songs to Favorites under their username.
+![MusicSongLyrics Cover Photo](photo/logedin.png)
 
-APIs:
-* YouTube
-* API Seeds Lyrics
+## Getting Started
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. First of all, you have to install [nodejs](https://nodejs.org/en/) for backend server and [MongoDB](https://www.mongodb.com/) for database on your local machine. 
 
-Old version:
-* https://huwu55.github.io/MusicSongLyrics/
-* user is able to create username only, if users have the same username, they will be getting into the same account
-    * use local storage for storing username
-* require to fill out both artist name and song name to search
-* use Firebase to store song info and playlists
+### Installing
+`cd React-Mongo-MusicSongLyrics` and run the command below to install everything for the server.
+```
+npm install
+```
+Then run the command below to change directory to client and install React project for front end.
+```
+install
+```
 
-New version:
-* https://react-mongo-musicsonglyrics.herokuapp.com/
-* have a backend server: node express
-* have database: Use Mongoose for MongoDB 
-    * DB Collections: Users and Songs
-* user is able to create account with username and password - jwt authentication
-* use React for front-end
-* future feature: allow users to create playlists
-    * additional DB Collections: Playlist
+### Running the tests
+To run a local testing server, go to the root directory of this project and run this command in your terminal:
+```
+node server
+```
+Now the local server is running on port 3001 in your local machine.
+
+`cd client` to React project directory and run this in your terminal:
+```
+yarn start
+```
+React is running on port 3000. Open your browser and visit http://localhost:3000.
+
+### Usage Example
+
