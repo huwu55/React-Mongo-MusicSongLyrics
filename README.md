@@ -34,10 +34,35 @@ React is running on port 3000. Open your browser and visit http://localhost:3000
 <p align="center">
   <img width="500" height="284" src="./photo/cover.png" alt="MusicSongLyrics Cover page">
 </p>
+
+<p align="center">
+  <img width="500" height="284" src="./photo/signup.png" alt="MusicSongLyrics sign up page">
+</p>
+
+<p align="center">
+  <img width="500" height="284" src="./photo/login.png" alt="MusicSongLyrics login page">
+</p>
+
+<p align="center">
+  <img width="500" height="284" src="./photo/addToPlaylist.png" alt="MusicSongLyrics add to playlist">
+</p>
+
+<p align="center">
+  <img width="500" height="284" src="./photo/selectPlaylist.png" alt="MusicSongLyrics select playlist">
+</p>
+
+<p align="center">
+  <img width="500" height="284" src="./photo/favorite.png" alt="MusicSongLyrics Favorites">
+</p>
+
+<p align="center">
+  <img width="500" height="284" src="./photo/logout.png" alt="MusicSongLyrics logged out">
+</p>
+<!-- 
 ![MusicSongLyrics Cover page](photo/cover.png)
 ![MusicSongLyrics sign up page](photo/signup.png)
 ![MusicSongLyrics login page](photo/login.png)
 ![MusicSongLyrics add to playlist](photo/addToPlaylist.png)
 ![MusicSongLyrics select playlist](photo/selectPlaylist.png)
 ![MusicSongLyrics Favorites](photo/favorite.png)
-![MusicSongLyrics logged out](photo/logout.png)
+![MusicSongLyrics logged out](photo/logout.png) -->
