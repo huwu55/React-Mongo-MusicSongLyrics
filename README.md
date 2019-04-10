@@ -2,7 +2,7 @@
 
 Using Node Express to host For users to search songs, enjoy watching music videos, and sing along with lyrics. Users are be able to sign up and log in using their usernames and passwords. Users can manage their songs by adding/deleting songs to/from Favorites. Users can create and manage playlists as well.
 
-![MusicSongLyrics Cover Photo](photo/logedin.png)
+![MusicSongLyrics logged in photo](photo/logedin.png)
 
 ## Getting Started
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. First of all, you have to install [nodejs](https://nodejs.org/en/) for backend server and [MongoDB](https://www.mongodb.com/) for database on your local machine. 
@@ -32,3 +32,10 @@ React is running on port 3000. Open your browser and visit http://localhost:3000
 
 ### Usage Example
 
+![MusicSongLyrics Cover page](photo/cover.png =1200x675)
+![MusicSongLyrics sign up page](photo/signup.png)
+![MusicSongLyrics login page](photo/login.png)
+![MusicSongLyrics add to playlist](photo/addToPlaylist.png)
+![MusicSongLyrics select playlist](photo/selectPlaylist.png)
+![MusicSongLyrics Favorites](photo/favorite.png)
+![MusicSongLyrics logged out](photo/logout.png)
