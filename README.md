@@ -31,6 +31,7 @@ yarn start
 React is running on port 3000. Open your browser and visit http://localhost:3000.
 
 ### Usage Example
+
 <p align="center">
   <img width="500" height="284" src="./photo/cover.png" alt="MusicSongLyrics Cover page">
 </p>
@@ -58,11 +59,18 @@ React is running on port 3000. Open your browser and visit http://localhost:3000
 <p align="center">
   <img width="500" height="284" src="./photo/logout.png" alt="MusicSongLyrics logged out">
 </p>
-<!-- 
-![MusicSongLyrics Cover page](photo/cover.png)
-![MusicSongLyrics sign up page](photo/signup.png)
-![MusicSongLyrics login page](photo/login.png)
-![MusicSongLyrics add to playlist](photo/addToPlaylist.png)
-![MusicSongLyrics select playlist](photo/selectPlaylist.png)
-![MusicSongLyrics Favorites](photo/favorite.png)
-![MusicSongLyrics logged out](photo/logout.png) -->
+
+## Deployed to Heroku
+Check out this project here: https://react-mongo-musicsonglyrics.herokuapp.com/
+
+## Meta
+
+Huiling Wu 
+* huwu@ucdavis.edu
+* https://github.com/huwu55
+* https://www.linkedin.com/in/huwu55/
+
+## Acknowledgments
+
+This project has an old version which it doesn't have a server and uses Firebase to store data. 
+Check out the old version here: https://github.com/huwu55/MusicSongLyrics.
