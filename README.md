@@ -31,9 +31,9 @@ yarn start
 React is running on port 3000. Open your browser and visit http://localhost:3000.
 
 ### Usage Example
-<!-- <p align="center">
-  <img width="1066" height="600" src="./photo/cover.png" alt="MusicSongLyrics Cover page">
-</p> -->
+<p align="center">
+  <img width="500" height="284" src="./photo/cover.png" alt="MusicSongLyrics Cover page">
+</p>
 ![MusicSongLyrics Cover page](photo/cover.png)
 ![MusicSongLyrics sign up page](photo/signup.png)
 ![MusicSongLyrics login page](photo/login.png)
