@@ -82,6 +82,9 @@ After user logs in
 * Server side:
     * verify jwt token and decode token to get username as middleware 
     * interact with database based on requests made
+        * add song to Favorite, remove song from Favorite
+        * create new playlist, delete existing playlist
+        * add song to existing playlist, remove song from existing playlist
 
 <p align="center">
   <img width="500" height="284" src="./photo/addToPlaylist.png" alt="MusicSongLyrics add to playlist">
