@@ -21,10 +21,6 @@ class App extends React.Component {
             username: ""
         };
     }
-    
-    // getToken = () => {
-    //     return localStorage.getItem('token');
-    // }
 
     signup = (event) => {
         event.preventDefault();
@@ -34,7 +30,7 @@ class App extends React.Component {
         let username = inputs[0].value.trim();
         let password = inputs[1].value.trim();
         let passwordConf = inputs[2].value.trim();
-        // console.log(username, password);
+
         if(username === "") alert("You need a username.");
         else if (password === passwordConf){
             return API.signup({username, password})
@@ -62,14 +58,10 @@ class App extends React.Component {
 
         return API.login({username, password})
             .then(res=>{
-                // console.log(res.data.token);
                 if (res.data.token){
                     this.setState({logged_in: true, username}, function(){
                       localStorage.setItem('token', res.data.token);
-                    //   localStorage.setItem('user', username);
                     });
-
-                    //API.home()
                 }
                 else{
                     alert('you were not logged in');
@@ -80,12 +72,9 @@ class App extends React.Component {
             });
     }
 
-    logout = (event) => {
-        // event.preventDefault();
-        
+    logout = (event) => {        
         this.setState({logged_in: false}, function(){
             localStorage.removeItem('token');
-            // localStorage.removeItem('user');
         });
     }
 
@@ -99,7 +88,6 @@ class App extends React.Component {
                         <Route exact path="/login" render={()=> <Login logged_in={this.state.logged_in} login={this.login} /> } />
                         <Route exact path="/logout" component={Logout} />
                         <Route exact path="/home" render={()=> <Home logged_in={this.state.logged_in} username={this.state.username} logout={this.logout} />} />
-                        {/* <Route component={NoMatch} /> */}
                     </Switch>
                     <Footer />
                 </div>

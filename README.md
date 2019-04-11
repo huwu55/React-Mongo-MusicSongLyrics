@@ -5,7 +5,14 @@ Using Node Express to host For users to search songs, enjoy watching music video
 ![MusicSongLyrics logged in photo](photo/logedin.png)
 
 ## Getting Started
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. First of all, you have to install [nodejs](https://nodejs.org/en/) for backend server and [MongoDB](https://www.mongodb.com/) for database on your local machine. 
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
+* Install [nodejs](https://nodejs.org/en/) for backend server.
+* Install [MongoDB](https://www.mongodb.com/) for database. 
+* Get API keys from 
+    * [YouTube](https://developers.google.com/youtube/v3/) to search for music videos
+    * [Apiseeds](https://apiseeds.com/documentation/lyrics) to search for lyrics
+
+After finish setting up the above, clone this project to your local machine and we can go to the next step.
 
 ### Installing
 `cd React-Mongo-MusicSongLyrics` and run the command below to install everything for the server.
@@ -31,6 +38,12 @@ yarn start
 React is running on port 3000. Open your browser and visit http://localhost:3000.
 
 ### Usage Example
+* This is a single page application that uses `react-router-dom` to navigate, hide and show React components without changing routes within Express.
+* Users have to sign up to create accounts in order to log in and search songs and lyrics.
+* talk about database setup - user, playlist, song
+    * use Mongodb, and Mongoose to access database
+* password - hash
+* create jwt token when login
 
 <p align="center">
   <img width="500" height="284" src="./photo/cover.png" alt="MusicSongLyrics Cover page">
@@ -44,6 +57,16 @@ React is running on port 3000. Open your browser and visit http://localhost:3000
   <img width="500" height="284" src="./photo/login.png" alt="MusicSongLyrics login page">
 </p>
 
+After user logs in 
+* Client side:
+    * user is able to search songs and lyrics by pairing artist and song names
+    * add current song to Favorite or existing playlists
+    * select playlist to see collections
+    * create new playlists
+* Server side:
+    * verify jwt token and decode token to get username as middleware 
+    * interact with database based on requests made
+
 <p align="center">
   <img width="500" height="284" src="./photo/addToPlaylist.png" alt="MusicSongLyrics add to playlist">
 </p>
@@ -55,6 +78,8 @@ React is running on port 3000. Open your browser and visit http://localhost:3000
 <p align="center">
   <img width="500" height="284" src="./photo/favorite.png" alt="MusicSongLyrics Favorites">
 </p>
+
+* when user logs out, jwt token that stored in local storage destroys.
 
 <p align="center">
   <img width="500" height="284" src="./photo/logout.png" alt="MusicSongLyrics logged out">
