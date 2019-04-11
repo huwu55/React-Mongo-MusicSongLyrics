@@ -41,6 +41,8 @@ Use Mongodb, and Mongoose to access database
     * video - YouTube video url
     * lyrics
 
+The database grows as more users sign up, playlists get created, and songs get searched and added.
+
 ### Running the tests
 To run a local testing server, go to the root directory of this project and run this command in your terminal:
 ```
@@ -57,7 +59,7 @@ React is running on port 3000. Open your browser and visit http://localhost:3000
 ### Usage Example
 * This is a single page application that uses `react-router-dom` to navigate, hide and show React components without changing routes within Express.
 * Users have to sign up to create accounts in order to log in and search songs and lyrics.
-* Create jwt token when users log in.
+* Create jwt token and stored in local storage when users log in.
 
 <p align="center">
   <img width="500" height="284" src="./photo/cover.png" alt="MusicSongLyrics Cover page">
