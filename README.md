@@ -24,6 +24,23 @@ Then run the command below to change directory to client and install React proje
 install
 ```
 
+### Database Set Up
+Use Mongodb, and Mongoose to access database
+* User schema
+    * name - user name, must be unique
+    * password_hash - password length must greater than 5, use `bcrypt` to generate hash
+    * favorites - collection of songs from Song as reference 
+    * playlists - collection of playlists from Playlist as reference
+* Playlist schema
+    * name - playlist name
+    * songs - collection of songs from Song as reference
+* Song schema
+    * name - song name
+    * artist - artist name
+    * thumbnail - thumbnail picture url
+    * video - YouTube video url
+    * lyrics
+
 ### Running the tests
 To run a local testing server, go to the root directory of this project and run this command in your terminal:
 ```
@@ -40,10 +57,7 @@ React is running on port 3000. Open your browser and visit http://localhost:3000
 ### Usage Example
 * This is a single page application that uses `react-router-dom` to navigate, hide and show React components without changing routes within Express.
 * Users have to sign up to create accounts in order to log in and search songs and lyrics.
-* talk about database setup - user, playlist, song
-    * use Mongodb, and Mongoose to access database
-* password - hash
-* create jwt token when login
+* Create jwt token when users log in.
 
 <p align="center">
   <img width="500" height="284" src="./photo/cover.png" alt="MusicSongLyrics Cover page">
