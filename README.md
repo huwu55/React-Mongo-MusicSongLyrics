@@ -1,6 +1,6 @@
 # React-Mongo-MusicSongLyrics
 
-A single page application that uses `react-router-dom` to navigate, hide and show React components without changing routes within Express. For users to search songs, enjoy watching music videos, and sing along with lyrics. Users are be able to sign up and log in using their usernames and passwords. Users can manage their songs by adding/deleting songs to/from Favorites, and create and manage playlists as well.
+For users to search songs, enjoy watching music videos, and sing along with lyrics. This is a single page application that uses react-router-dom to navigate, hide and show React components without changing routes within Express. Users are be able to sign up and log in, and manage songs by adding them to Favorites or to created playlists.
 
 ![MusicSongLyrics logged in photo](photo/logedin.png)
 
