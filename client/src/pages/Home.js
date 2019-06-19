@@ -33,11 +33,33 @@ class Home extends React.Component {
         API.userInfo(this.getToken())
             .then(res=>{
                 let userInfo = res.data;
-                this.setState({
-                    username:   userInfo.name,
-                    favorites: [...userInfo.favorites],
-                    playlists: [...userInfo.playlists]
-                });
+
+                if(userInfo.favorites.length > 0){
+                    this.setState({
+                        username:   userInfo.name,
+                        song: userInfo.favorites[userInfo.favorites.length-1],
+                        favorites: [...userInfo.favorites],
+                        playlists: [...userInfo.playlists],
+                        isPlaylist: true,
+                        selectedPlaylist: {
+                            name: "Favorite",
+                            songs: [...userInfo.favorites]
+                        }
+                    });
+                }
+                else{
+                    this.setState({
+                        username:   userInfo.name,
+                        //song: userInfo.favorites[userInfo.favorites.length-1],
+                        favorites: [...userInfo.favorites],
+                        playlists: [...userInfo.playlists],
+                        isPlaylist: true,
+                        selectedPlaylist: {
+                            name: "Favorite",
+                            songs: [...userInfo.favorites]
+                        }
+                    });
+                }
             })
             .catch(err=>{
                 console.log(err);

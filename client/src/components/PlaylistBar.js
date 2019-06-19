@@ -3,7 +3,7 @@ import React from "react";
 export default (props) => {
     return (
         <div id="playlist" className="col-12">
-            <select id="selectPlaylist" className="form-control" defaultValue="None" onChange={props.selectPl}>
+            <select id="selectPlaylist" className="form-control" defaultValue="Favorite" onChange={props.selectPl}>
                 <option value="None">Please select a playlist</option>
                 <option value="Favorite">Favorite</option>
                 {(props.playlists) && props.playlists.map((pl)=>(
