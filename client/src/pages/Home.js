@@ -33,7 +33,7 @@ class Home extends React.Component {
         API.userInfo(this.getToken())
             .then(res=>{
                 let userInfo = res.data;
-
+                //console.log(userInfo.playlists);
                 if(userInfo.favorites.length > 0){
                     this.setState({
                         username:   userInfo.name,
@@ -150,7 +150,7 @@ class Home extends React.Component {
 
     isPlaylist = (e) => {
         let selectedPlaylist = e.target.value;
-        console.log(selectedPlaylist);
+        //console.log(selectedPlaylist);
         if (selectedPlaylist === "None"|| selectedPlaylist==="Favorite"){
             this.setState({isPlaylist: false});
             if(selectedPlaylist==="Favorite"){
@@ -188,17 +188,39 @@ class Home extends React.Component {
         event.preventDefault();
 
         let playlistName = event.target.children[0].value.trim();
+        let created = false;
 
-        API.createPlaylist(playlistName, this.getToken())
-            .then(res=>{
-                alert("Playlist created: "+playlistName);
-                this.setState({
-                    playlists: res.data.playlists
+        for(let i = 0; i < this.state.playlists.length; i++){
+            if(this.state.playlists[i].name === playlistName)
+                created = true;
+        }
+
+        if(!created){
+            API.createPlaylist(playlistName, this.getToken())
+                .then(res=>{
+                    alert("Playlist created: "+playlistName);
+                    this.setState({
+                        playlists: res.data.playlists
+                    });
+                })
+                .catch(err=>{
+                    console.log("create new playlist error: ", err);
                 });
-            })
-            .catch(err=>{
-                console.log("create new playlist error: ", err);
-            });
+        }
+        else{
+            if(window.confirm("Playlist name exists, do you want to continue creating this playlist?")){
+                API.createPlaylist(playlistName, this.getToken())
+                    .then(res=>{
+                        alert("Playlist created: "+playlistName);
+                        this.setState({
+                            playlists: res.data.playlists
+                        });
+                    })
+                    .catch(err=>{
+                        console.log("create new playlist error: ", err);
+                    });
+            }
+        }
     }
 
     addToPlaylist = (pid) =>{
