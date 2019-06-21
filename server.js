@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const path = require("path");
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const fetch = require('node-fetch');
 require("dotenv").config();
 
 const db = require("./models");
@@ -134,35 +135,68 @@ app.post('/search', verifyToken, (req, res)=>{
         lyrics : ""
     };
 
-    axios.get("https://www.googleapis.com/youtube/v3/search", {
-        params: {
-            q : `${artist}+${songName}`,
-            maxResults: 1,
-            part: "snippet",
-            type: "video",
-            key : youtubeAPI
-        }
-    }).then(response => {
-        let result = response.data.items[0];
-        songInfo.video = `https://www.youtube.com/embed/${result.id.videoId}`;
-        songInfo.thumbnail = result.snippet.thumbnails.medium.url;
+    // axios.get("https://www.googleapis.com/youtube/v3/search", {
+    //     params: {
+    //         q : `${artist}+${songName}`,
+    //         maxResults: 1,
+    //         part: "snippet",
+    //         type: "video",
+    //         key : youtubeAPI
+    //     }
+    // }).then(response => {
+    //     let result = response.data.items[0];
+    //     songInfo.video = `https://www.youtube.com/embed/${result.id.videoId}`;
+    //     songInfo.thumbnail = result.snippet.thumbnails.medium.url;
 
-        axios.get(`https://orion.apiseeds.com/api/music/lyric/${artist}/${songName}?apikey=${lyricsAPI}`)
-            .then(response => {
-                let lyrics = response.data.result.track.text;
+    //     axios.get(`https://orion.apiseeds.com/api/music/lyric/${artist}/${songName}?apikey=${lyricsAPI}`)
+    //         .then(response => {
+    //             let lyrics = response.data.result.track.text;
 
-                songInfo.name = response.data.result.track.name;
-                songInfo.artist = response.data.result.artist.name;
-                songInfo.lyrics = lyrics;
-                res.json(songInfo);
-            }).catch(err=>{
-                res.status(404).send("error");
-                // res.json({error: "Lyrics not found"});
-            });
-    }).catch(error => {
-        console.log(error);
-        res.status(422).json(error);
-    });
+    //             songInfo.name = response.data.result.track.name;
+    //             songInfo.artist = response.data.result.artist.name;
+    //             songInfo.lyrics = lyrics;
+    //             res.json(songInfo);
+    //         }).catch(err=>{
+    //             res.status(404).send("error");
+    //             // res.json({error: "Lyrics not found"});
+    //         });
+    // }).catch(error => {
+    //     console.log(error);
+    //     res.status(422).json(error);
+    // });
+
+    let youtubeURL = `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=1&q=${artist}+${songName}&type=video&key=${youtubeAPI}`;
+
+    let lyricsURL = `https://orion.apiseeds.com/api/music/lyric/${artist}/${songName}?apikey=${lyricsAPI}`;
+
+    fetch(youtubeURL)
+        .then(res => res.json())
+        .then(response => {
+            let result = response.items[0];
+            songInfo.video = `https://www.youtube.com/embed/${result.id.videoId}`;
+            songInfo.thumbnail = result.snippet.thumbnails.medium.url;
+
+            fetch(lyricsURL)
+                .then(res => res.json())
+                .then(response => {
+                    // console.log(response.result);
+                    // res.send(response);
+                    let info = response.result;
+                    let lyrics = info.track.text;
+
+                    songInfo.name = info.track.name;
+                    songInfo.artist = info.artist.name;
+                    songInfo.lyrics = lyrics;
+                    res.json(songInfo);
+                }).catch(err=>{
+                    console.log(errrr);
+                    res.status(404).send("error");
+                    // res.json({error: "Lyrics not found"});
+                });
+        }).catch(error => {
+            console.log("errorrrr"+error);
+            res.status(422).json(error);
+        });
 });
 
 // // show all songs from favorite
