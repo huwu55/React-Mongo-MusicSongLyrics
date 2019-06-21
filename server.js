@@ -179,8 +179,6 @@ app.post('/search', verifyToken, (req, res)=>{
             fetch(lyricsURL)
                 .then(res => res.json())
                 .then(response => {
-                    // console.log(response.result);
-                    // res.send(response);
                     let info = response.result;
                     let lyrics = info.track.text;
 
