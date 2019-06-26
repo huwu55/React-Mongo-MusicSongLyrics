@@ -40,7 +40,7 @@ class Home extends React.Component {
                         song: userInfo.favorites[userInfo.favorites.length-1],
                         favorites: [...userInfo.favorites],
                         playlists: [...userInfo.playlists],
-                        isPlaylist: true,
+                        isPlaylist: false,
                         selectedPlaylist: {
                             name: "Favorite",
                             songs: [...userInfo.favorites]
