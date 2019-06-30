@@ -283,7 +283,7 @@ class Home extends React.Component {
                             playlists={this.state.playlists}
                             deletePlaylist={this.deletePlaylist}
                         />
-                        {(this.state.selectedPlaylist.songs.length === 0 || this.state.selectedPlaylist.songs === undefined) &&
+                        {(this.state.selectedPlaylist.songs === undefined || this.state.selectedPlaylist.songs.length === 0) &&
                             <div className="index intro col-12">
                                 <p>Looks like you don't have any song yet!</p>
                                 <p>Search a song and add it to Favorites or playlists</p>
