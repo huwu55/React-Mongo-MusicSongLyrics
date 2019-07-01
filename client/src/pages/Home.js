@@ -20,7 +20,8 @@ class Home extends React.Component {
             selectedPlaylist :{
                 name: "",
                 songs:[]
-            }
+            },
+            searching : false
         };
     }
     
@@ -69,7 +70,6 @@ class Home extends React.Component {
 
     search = (event)=>{
         event.preventDefault();
-
         let inputs = event.target.children;
 
         let artist = inputs[0].value.trim();
@@ -77,13 +77,15 @@ class Home extends React.Component {
 
         if (artist === "" || songName === "") return alert("Must enter both artist and song name.");
 
+        this.setState({searching: true});
         return API.searchSong({artist, songName}, this.getToken())
             .then((res) => {
-                this.setState({song: res.data});
+                this.setState({song: res.data, searching: false});
             })
             .catch(error=>{
                 if(error.response.status === 403) alert("Invalid user token, please log in");
                 else alert("No lyrics found.");
+                this.setState({searching: false});
             });
     }
 
@@ -266,7 +268,7 @@ class Home extends React.Component {
 
         return (
             <div>
-                <Navbar username={this.state.username} logout={this.props.logout} search={this.search} />
+                <Navbar username={this.state.username} logout={this.props.logout} search={this.search} searching={this.state.searching}/>
 
                 <div className="container">
                     <Video 

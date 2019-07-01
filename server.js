@@ -157,7 +157,7 @@ app.post('/search', verifyToken, (req, res)=>{
                     songInfo.lyrics = lyrics;
                     res.json(songInfo);
                 }).catch(err=>{
-                    console.log(errrr);
+                    //console.log(errrr);
                     res.status(404).send("error");
                     // res.json({error: "Lyrics not found"});
                 });

@@ -15,7 +15,17 @@ export default (prop) => {
             <form className="search form-inline" onSubmit={prop.search}>
                 <input className="form-control mr-sm-2" type="search" placeholder="Artist"></input>
                 <input className="form-control mr-sm-2" type="search" placeholder="Song Name"></input>
-                <button className="btn btn-outline-secondary my-2 my-sm-0" type="submit">Search</button>
+                <button className="btn btn-outline-secondary my-2 my-sm-0" type="submit" disabled={prop.searching}>
+                    {prop.searching === false && 
+                        <span>Search</span>
+                    }
+                    {prop.searching &&
+                        <span>
+                            <div className="spinner-border spinner-border-sm"></div> &nbsp;
+                            <span>Searching</span>
+                        </span>
+                    }
+                </button>
             </form>
         </nav>
     );
