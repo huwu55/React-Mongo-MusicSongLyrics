@@ -145,6 +145,11 @@ textarea {
     display: inline-block;
 }
 
+.card-body .dropright{
+    float: right;
+}
+
+
 footer {
     background-color: black;
     width:100%;

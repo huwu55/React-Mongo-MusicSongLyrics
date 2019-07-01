@@ -12,7 +12,9 @@ export default (prop) => {
 
                 <AddToPlaylist 
                     playlists={prop.playlists}
-                    addToPlaylist={prop.addToPlaylist} />
+                    addToPlaylist={prop.addToPlaylist} 
+                    song={prop.song}
+                />
             </div>
             <div className="col-4 lyrics">
                 <textarea rows="20" col="1" disabled readOnly value={prop.song.lyrics}></textarea>

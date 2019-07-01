@@ -1,4 +1,5 @@
 import React from "react";
+import Dropdown from "./DropdownMenu-Playlists";
 
 export default (props) => {
     return (
@@ -6,14 +7,19 @@ export default (props) => {
             <button type="button" className="btn btn-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Add this song to playlist
             </button>
-            <div className="dropdown-menu">
-
+            {/* <div className="dropdown-menu">
                 {(props.playlists) && props.playlists.map((pl)=>(
                     <button className="dropdown-item" type="button" key={pl._id} onClick={()=>props.addToPlaylist(pl._id)}>
                         {pl.name}
                     </button>
                 ))}
-            </div>
+            </div> */}
+
+            <Dropdown 
+                playlists={props.playlists}
+                addToPlaylist={props.addToPlaylist}
+                song={props.song}
+            />
         </div>
     );
 

@@ -1,28 +1,44 @@
 import React from "react";
+import Dropdown from "./DropdownMenu-Playlists";
 
 export default (prop) => {
     return (
         <div>
             <div className="card-image">
-                <img className="card-img-top" src={prop.thumbnail} alt={prop.name}></img>
+                <img className="card-img-top" src={prop.song.thumbnail} alt={prop.song.name}></img>
                 <div className="card-btns">
                     <button id="delPlaylist" className="btn btn-outline-light" type="button" title="Play" onClick={()=>prop.playThis({
-                        artist: prop.artist,
-                        name: prop.name,
-                        thumbnail: prop.thumbnail,
-                        video: prop.video,
-                        lyrics: prop.lyrics
+                        artist: prop.song.artist,
+                        name: prop.song.name,
+                        thumbnail: prop.song.thumbnail,
+                        video: prop.song.video,
+                        lyrics: prop.song.lyrics
                     })}>
                         <i className="fas fa-play"></i>
                     </button> 
-                    <button id="delPlaylist" className="btn btn-outline-light" type="button" title="Delete" onClick={()=>prop.deleteSong(prop.id)}>
+                    <button id="delPlaylist" className="btn btn-outline-light" type="button" title="Delete" onClick={()=>prop.deleteSong(prop.song._id)}>
                         <i className="fas fa-times"></i>
                     </button> 
                 </div>
             </div>
             <div className="card-body">
-                <h5 className="card-title">{prop.name}</h5>
-                <p className="card-text">{prop.artist}</p>           
+                <h5 className="card-title">
+                    {prop.song.name} 
+
+                    {prop.selectedPlaylist==="Favorite" && 
+                        <div className="btn-group dropright">
+                            <button className="btn btn-light dropdown" data-toggle="dropdown" type="button" title="Add song to playlist">
+                                <i className="fas fa-plus"></i>
+                            </button>
+                            <Dropdown 
+                                playlists={prop.playlists}
+                                addToPlaylist={prop.addToPlaylist}
+                                song={prop.song}
+                            />
+                        </div>
+                    }
+                </h5>
+                <p className="card-text">{prop.song.artist}</p>           
             </div>
         </div>
     );

@@ -83,9 +83,9 @@ class Home extends React.Component {
                 this.setState({song: res.data, searching: false});
             })
             .catch(error=>{
+                this.setState({searching: false});
                 if(error.response.status === 403) alert("Invalid user token, please log in");
                 else alert("No lyrics found.");
-                this.setState({searching: false});
             });
     }
 
@@ -118,7 +118,7 @@ class Home extends React.Component {
 
     deleteSong = (songid) => {
         let plName = this.state.selectedPlaylist.name;
-
+        //console.log(plName, songid);
         if (this.state.selectedPlaylist.name === "Favorite")
             return API.delFromFav(songid, this.getToken())
                 .then(response => {
@@ -136,7 +136,7 @@ class Home extends React.Component {
                 });
         else return API.deleteFromPlaylist(this.state.selectedPlaylist.name, songid, this.getToken())
                 .then(res=>{
-                    console.log(res.data);
+                    //console.log(res.data);
                     this.setState({
                         selectedPlaylist: {
                             name: plName,
@@ -225,10 +225,10 @@ class Home extends React.Component {
         }
     }
 
-    addToPlaylist = (pid) =>{
+    addToPlaylist = (pid, song) =>{
         if (!this.state.song.name)  return alert("Search a song first");
 
-        return API.addToPlaylist(pid, this.state.song, this.getToken())
+        return API.addToPlaylist(pid, song, this.getToken())
             .then((response)=>{
 
                 if (this.state.selectedPlaylist.name === pid)
@@ -292,7 +292,14 @@ class Home extends React.Component {
                             </div>
                         }
                         {this.state.selectedPlaylist.songs.length > 0 &&
-                            <Playlist playThis={this.playThis} deleteSong={this.deleteSong} songs={this.state.selectedPlaylist.songs} />
+                            <Playlist 
+                                playThis={this.playThis} 
+                                deleteSong={this.deleteSong} 
+                                songs={this.state.selectedPlaylist.songs} 
+                                playlists={this.state.playlists}
+                                selectedPlaylist={this.state.selectedPlaylist.name}
+                                addToPlaylist={this.addToPlaylist}
+                            />
                         }
                     </div>
                 </div>
