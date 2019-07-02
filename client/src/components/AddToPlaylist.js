@@ -19,6 +19,7 @@ export default (props) => {
                 playlists={props.playlists}
                 addToPlaylist={props.addToPlaylist}
                 song={props.song}
+                focusTextInput={props.focusTextInput}
             />
         </div>
     );

@@ -10,7 +10,6 @@ import API from "../utils/API";
 class Home extends React.Component {
     constructor(props){
         super(props);
-
         this.state = {
             username : this.props.username,
             song : {},
@@ -278,6 +277,7 @@ class Home extends React.Component {
                         addToPlaylist={this.addToPlaylist}
                     />
                     <div className="row collections">
+                        <span id="anchor-pl"></span>
                         <PlaylistBar 
                             selectPl={this.isPlaylist}
                             isPlaylist={this.state.isPlaylist}
