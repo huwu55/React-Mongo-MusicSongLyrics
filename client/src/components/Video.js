@@ -5,7 +5,7 @@ export default (prop) => {
     return (
         <div className="row videoinfo">
             <div className="col-8 video">
-                <iframe id="youtube" frameBorder="0" allowFullScreen src={prop.song.video}></iframe>
+                <iframe id="youtube" frameBorder="0" allowFullScreen src={prop.song.video} title={prop.song.name}></iframe>
                 <button type="button" title="Add to Favorites" className="fav btn btn-light" onClick={()=>prop.addToFav()}>
                     <i className="fas fa-heart"></i>
                 </button>
