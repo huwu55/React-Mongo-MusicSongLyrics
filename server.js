@@ -33,8 +33,8 @@ function verifyToken(req, res, next) {
     if (token) {
         jwt.verify(token, process.env.JWT_SECRET, (err, decod) => {
             if (err) {
-                res.status(403).json({
-                    message: "Wrong Token"
+                res.status(401).json({
+                    error: "Wrong token, please log in again."
                 });
             } else {
                 req.decoded = decod;
@@ -42,8 +42,8 @@ function verifyToken(req, res, next) {
             }
         });
     } else {
-        res.status(403).json({
-            message: "No Token"
+        res.status(401).json({
+            error: "Token not found, please log in again."
         });
     }
 }
@@ -56,24 +56,20 @@ app.post('/signup', (req, res)=>{
             if (user.length > 0) {
                 return res.status(406).json({ error: 'Username already exists' });
             }
-            if (!req.body.password) {
-                console.log("no password");
-                return res.status(401).json({ error: 'You need a password' });
-            }
-            if (req.body.password.length <= 5) {
-                console.log("password length less than 5");
-                return res.status(401).json({ error: 'Password length must be greater than 5' });
-            }
 
             bcrypt.genSalt(10, function(err, salt) {
+                if(err) return res.status(406).json({ error: err });
+
                 bcrypt.hash(req.body.password, salt, function(err, hash) {
+                    if(err) return res.status(406).json({ error: err });
+
                     db.User.create({
                         name: req.body.username,
                         password_hash: hash
                     }, function(error, user) {
                         // Log any errors
                         if (error) {
-                            res.send(error);
+                            res.status(406).json({ error });
                         } else {
                             res.json({
                                 message: 'Successfully signed up!'
@@ -92,8 +88,11 @@ app.post('/login', (req, res)=>{
     db.User.find({name: req.body.username})
         .then(user => {
 
-            if(user.length == 0) return res.status(404).json({ error: 'User not found' });
-            if (!bcrypt.compareSync(req.body.password, user[0].password_hash)) return res.status(401).json({ error: 'Incorrect password ' });
+            if(user.length == 0) 
+                return res.status(404).json({ error: 'User not found' });
+
+            if (!bcrypt.compareSync(req.body.password, user[0].password_hash)) 
+                return res.status(401).json({ error: 'Incorrect password ' });
         
             let payload = {
                 _id: user[0]._id,
@@ -101,12 +100,14 @@ app.post('/login', (req, res)=>{
             };
 
             jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '4h' }, (err, token)=>{
+                if(err) return res.status(401).json({ error: err});
+
                 return res.json({token});
             });
-
         })
         .catch(err =>{
             console.log("error", err);
+            return res.status(404).json({ error: err });
         });
 });
 
@@ -114,11 +115,13 @@ app.post('/userInfo', verifyToken, (req, res)=>{
     db.User.find({name: req.decoded.username})
         .populate("favorites")
         .populate("playlists")
+        //.populate("songs")
         .then(u=>{
             res.json(u[0]);
         })
         .catch(err=>{
             console.log(err);
+            res.status(403).json({error: err});
         });
 });
 
@@ -133,7 +136,6 @@ app.post('/search', verifyToken, (req, res)=>{
         video : "",
         lyrics : ""
     };
-
 
     let youtubeURL = `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=1&q=${artist}+${songName}&type=video&key=${youtubeAPI}`;
 
@@ -157,51 +159,55 @@ app.post('/search', verifyToken, (req, res)=>{
                     songInfo.lyrics = lyrics;
                     res.json(songInfo);
                 }).catch(err=>{
-                    //console.log(errrr);
-                    res.status(404).send("error");
-                    // res.json({error: "Lyrics not found"});
+                    console.log("lyricsURL: lyrics not found. ",err);
+                    res.status(404).json({error: "Lyrics not found"});
                 });
         }).catch(error => {
-            console.log("errorrrr"+error);
-            res.status(422).json(error);
+            console.log("youtubeURL: music video not found. "+error);
+            res.status(404).json({error: "Music Video not found"});
         });
 });
 
-// // show all songs from favorite
-app.post('/favorite', verifyToken, (req, res)=>{
+// show all songs from favorite
+// app.post('/favorite', verifyToken, (req, res)=>{
 
-    db.User.find({name: req.decoded.username})
+//     db.User.find({name: req.decoded.username})
+//         .populate("favorites")
+//         .then(user=>{
+//             res.json(user[0]);
+//         })
+//         .catch(err=>{
+//             console.log(err);
+//             res.json(err);
+//         });
+// });
+
+// find user and populate Favorite
+function findUserAndPopulateFavorite(res, username){
+    return db.User.find({name: username})
         .populate("favorites")
         .then(user=>{
             res.json(user[0]);
         })
         .catch(err=>{
-            console.log(err);
-            res.json(err);
+            console.log("Error find user: ", err);
+            res.status(404).json({error: "Error in finding user's info."});
         });
-});
+}
 
 // // add song to favorite
 app.post('/favorite/song', verifyToken, (req, res)=>{
-
     db.Song.find(req.body.songInfo)
         .then(result=>{
             if(result.length > 0){
                 //$addToSet adds a value to an array unless the value is already present, in which case $addToSet does nothing to that array
                 db.User.findOneAndUpdate({name: req.decoded.username}, {"$addToSet": {"favorites": result[0]._id}}, { "new": true })
                     .then(user=>{
-                        db.User.find({name: req.decoded.username})
-                            .populate("favorites")
-                            .then(user=>{
-                                res.json(user[0]);
-                            })
-                            .catch(err=>{
-                                res.json(err);
-                            });
+                        findUserAndPopulateFavorite(res, req.decoded.username);
                     })
                     .catch(err=>{
-                        console.log(err);
-                        res.json(err);
+                        console.log("Error update user's favorite songs:", err);
+                        res.status(404).json({error: "Error in updating user's Favorite songs."});
                     });
             }
             else{
@@ -210,44 +216,30 @@ app.post('/favorite/song', verifyToken, (req, res)=>{
                         return db.User.findOneAndUpdate({name: req.decoded.username}, {"$push": {"favorites": songInfo._id}}, { "new": true });
                     })
                     .then(user=>{
-                        db.User.find({name: req.decoded.username})
-                            .populate("favorites")
-                            .then(user=>{
-                                res.json(user[0]);
-                            })
-                            .catch(err=>{
-                                res.json(err);
-                            });
+                        findUserAndPopulateFavorite(res, req.decoded.username);
                     })
                     .catch(err=>{
-                        res.json(err);
+                        console.log("Error create new song:", err);
+                        res.status(404).json({error: "Error in adding new song."});
                     });
             }
         })
         .catch(error=>{
-            console.log(error);
-            res.status(400).json(error);
+            console.log("Error finding song info: ",error);
+            res.status(404).json({error: "Error in finding song info."});
         });
 });
 
-// // remove song from favorite
+// remove song from favorite
 app.delete('/favorite/song', verifyToken, (req, res)=>{
 
     db.User.findOneAndUpdate({name: req.decoded.username}, {"$pull": {"favorites": req.body.id}}, { "new": true })
         .then(user=>{
-            db.User.find({name: req.decoded.username})
-                .populate("favorites")
-                .then(user=>{
-                    res.json(user[0]);
-                })
-                .catch(err=>{
-                    console.log(err);
-                    res.json(err);
-                });
+            findUserAndPopulateFavorite(res, req.decoded.username);
         })
         .catch(err=>{
-            console.log(err);
-            res.json(err);
+            console.log("Error deleting song from favorite:", err);
+            res.status(404).json({error: "Error in deleting song from favorite."});
         });
 });
 
@@ -266,12 +258,13 @@ app.post('/createPlaylist', verifyToken, (req, res)=>{
                     res.json(u[0]);
                 })
                 .catch(err => {
-                    console.log(err);
-                    res.json(err);
+                    console.log("Error find user: ", err);
+                    res.status(404).json({error: "Error in finding user's info."});
                 });
         })
         .catch(err => {
-            res.status(400).json(err);
+            console.log("Error in creating new playlist: ", err);
+            res.status(404).json({error: "Error in creating new playlist."});
         });
 });
 
@@ -284,8 +277,8 @@ app.post('/playlist', verifyToken, (req, res)=>{
             res.json(playlist);
         })
         .catch(err=>{
-            // console.log(err);
-            res.json(err);
+            console.log("Error in finding playlist:", err);
+            res.status(404).json({error: "Error in finding playlist."});
         });
 });
 
@@ -303,9 +296,24 @@ app.delete('/playlist', verifyToken, (req, res)=>{
             });
         })
         .catch(err=>{
-            res.json(err);
+            console.log("Error deleting playlist:", err);
+            res.status(404).json({error: "Error in deleting playlist."});
         });
 });
+
+// find playlist and populate songs
+function findPlaylistAndPopulateSongs(res, plID){
+    return db.Playlist.find({_id: plID})
+        .populate("songs")
+        .then(playlist=>{
+            res.json(playlist[0]);
+        })
+        .catch(err=>{
+            //res.json(err);
+            console.log("Error in finding playlist:", err);
+            res.status(404).json({error: "Error in finding playlist."});
+        });
+}
 
 // add song to playlist
 app.post('/playlist/song', verifyToken, (req, res)=>{
@@ -318,43 +326,30 @@ app.post('/playlist/song', verifyToken, (req, res)=>{
                 //$addToSet adds a value to an array unless the value is already present, in which case $addToSet does nothing to that array
                 db.Playlist.findOneAndUpdate({_id: plID}, {"$addToSet": {"songs": result[0]._id}}, { "new": true })
                     .then(playlist=>{
-                        db.Playlist.find({_id: plID})
-                            .populate("songs")
-                            .then(playlist=>{
-                                res.json(playlist[0]);
-                            })
-                            .catch(err=>{
-                                res.json(err);
-                            });
+                        findPlaylistAndPopulateSongs(res, plID);
                     })
                     .catch(err=>{
-                        console.log(err);
-                        res.json(err);
+                        console.log("Error in finding and updating playlist:", err);
+                        res.status(404).json({error: "Error in finding and updating playlist."});
                     });
             }
             else{
                 db.Song.create(songInfo)
                     .then(song=>{
-                        return db.Playlist.findOneAndUpdate({_id: plName}, {"$push": {"songs": song._id}}, { "new": true });
+                        return db.Playlist.findOneAndUpdate({_id: plID}, {"$push": {"songs": song._id}}, { "new": true });
                     })
                     .then(pl=>{
-                        db.Playlist.find({_id: plName})
-                            .populate("songs")
-                            .then(playlist=>{
-                                res.json(playlist[0]);
-                            })
-                            .catch(err=>{
-                                res.json(err);
-                            });
+                        findPlaylistAndPopulateSongs(res, plID);
                     })
                     .catch(err=>{
-                        res.json(err);
+                        console.log("Error create new song:", err);
+                        res.status(404).json({error: "Error in adding new song."});
                     });
             }
         })
         .catch(error=>{
-            // console.log(error);
-            res.status(400).json(error);
+            console.log("Error finding song info: ",error);
+            res.status(404).json({error: "Error in finding song info."});
         });
 });
 
@@ -365,19 +360,11 @@ app.delete('/playlist/song', verifyToken, (req, res)=>{
 
     db.Playlist.findOneAndUpdate({_id: plID}, {"$pull": {"songs": songID}}, { "new": true })
         .then(playlist=>{
-            db.Playlist.find({_id: plID})
-                .populate("songs")
-                .then(playlist=>{
-                    res.json(playlist[0]);
-                })
-                .catch(err=>{
-                    // console.log(err);
-                    res.json(err);
-                });
+            findPlaylistAndPopulateSongs(res, plID);
         })
         .catch(err=>{
-            // console.log(err);
-            res.json(err);
+            console.log("Error deleting song from playlist:", err);
+            res.status(404).json({error: "Error in deleting song from playlist."});
         });
 });
 
@@ -386,5 +373,5 @@ app.get("*", function(req, res) {
 });
 
 app.listen(PORT, function() {
-    console.log('🌎 ==> Now listening on PORT %s! Visit http://localhost:%s in your browser!', PORT, PORT);
+    console.log('🌎 ==> Now listening in PORT %s! Visit http://localhost:%s in your browser!', PORT, PORT);
 });

@@ -12,9 +12,9 @@ export default {
     searchSong : (songInfo, token) => {
         return axios.post("/search", {songInfo, token});
     },
-    getFavorite : (token) => {
-        return axios.post('/favorite', {token});
-    },
+    // getFavorite : (token) => {
+    //     return axios.post('/favorite', {token});
+    // },
     addToFav : (songInfo, token) => {
         return axios.post('/favorite/song', {songInfo, token});
     },

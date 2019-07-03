@@ -17,8 +17,7 @@ class App extends React.Component {
 
         this.state = {
             signed_up : false,
-            logged_in : false,
-            username: ""
+            logged_in : false
         };
     }
 
@@ -28,23 +27,25 @@ class App extends React.Component {
         let inputs = event.target.children;
         // console.log(inputs);
         let username = inputs[0].value.trim();
-        let password = inputs[1].value.trim();
-        let passwordConf = inputs[2].value.trim();
+        let password = inputs[1].value;
+        let passwordConf = inputs[2].value;
 
-        if(username === "") alert("You need a username.");
+        if(username === "") return alert("You need a username.");
+        else if(password === "") return alert("You need a password.");
         else if (password === passwordConf){
-            return API.signup({username, password})
+            if(password.length <= 5) return alert('Password length must be greater than 5.');
+
+            else return API.signup({username, password})
                 .then((res) => {
-                    alert("Successfully signed up!");
+                    alert(res.data.message);
                     this.setState({signed_up: true});
                 })
                 .catch(err => {
-                    // console.log("error", err.response);
                     if (err.response)   alert(err.response.data.error);
                 });
         }
         else{
-            alert('your password and password confirmation have to match!');
+            return alert('your password and password confirmation have to match!');
         }
     }
     
@@ -59,7 +60,7 @@ class App extends React.Component {
         return API.login({username, password})
             .then(res=>{
                 if (res.data.token){
-                    this.setState({logged_in: true, username}, function(){
+                    this.setState({logged_in: true}, function(){
                       localStorage.setItem('token', res.data.token);
                     });
                 }
@@ -87,7 +88,7 @@ class App extends React.Component {
                         <Route exact path="/signup" render={()=> <Signup signed_up={this.state.signed_up} signup={this.signup} /> } />
                         <Route exact path="/login" render={()=> <Login logged_in={this.state.logged_in} login={this.login} /> } />
                         <Route exact path="/logout" component={Logout} />
-                        <Route exact path="/home" render={()=> <Home logged_in={this.state.logged_in} username={this.state.username} logout={this.logout} />} />
+                        <Route exact path="/home" render={()=> <Home logout={this.logout} />} />
                     </Switch>
                     <Footer />
                 </div>

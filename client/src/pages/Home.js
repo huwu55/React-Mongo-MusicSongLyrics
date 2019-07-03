@@ -6,12 +6,11 @@ import PlaylistBar from "../components/PlaylistBar";
 import Playlist from "../components/Playlist";
 import API from "../utils/API";
 
-
 class Home extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            username : this.props.username,
+            username : "",
             song : {},
             favorites : [],
             playlists : [],
@@ -32,37 +31,27 @@ class Home extends React.Component {
 
         API.userInfo(this.getToken())
             .then(res=>{
-                let userInfo = res.data;
-                //console.log(userInfo.playlists);
-                if(userInfo.favorites.length > 0){
-                    this.setState({
-                        username:   userInfo.name,
-                        song: userInfo.favorites[userInfo.favorites.length-1],
-                        favorites: [...userInfo.favorites],
-                        playlists: [...userInfo.playlists],
-                        isPlaylist: false,
-                        selectedPlaylist: {
-                            name: "Favorite",
-                            songs: [...userInfo.favorites]
-                        }
-                    });
-                }
-                else{
-                    this.setState({
-                        username:   userInfo.name,
-                        //song: userInfo.favorites[userInfo.favorites.length-1],
-                        favorites: [...userInfo.favorites],
-                        playlists: [...userInfo.playlists],
-                        isPlaylist: true,
-                        selectedPlaylist: {
-                            name: "Favorite",
-                            songs: [...userInfo.favorites]
-                        }
-                    });
-                }
+                //res.data;
+                //console.log(res.data.favorites);
+                let userInfo = {
+                    username: res.data.name,
+                    song: res.data.favorites[res.data.favorites.length-1],
+                    favorites: [...res.data.favorites],
+                    playlists: [...res.data.playlists],
+                    isPlaylist: false,
+                    selectedPlaylist: {
+                        name: "Favorite",
+                        songs: [...res.data.favorites]
+                    }
+                };
+
+                if(res.data.favorites.length === 0)
+                    userInfo.song = {};
+
+                this.setState(userInfo);
             })
             .catch(err=>{
-                console.log(err);
+                if(err.response) console.log(err.response.data.error);
             });
 
     }
@@ -83,8 +72,8 @@ class Home extends React.Component {
             })
             .catch(error=>{
                 this.setState({searching: false});
-                if(error.response.status === 403) alert("Invalid user token, please log in");
-                else alert("No lyrics found.");
+
+                alert(error.response.data.error);
             });
     }
 
@@ -106,8 +95,7 @@ class Home extends React.Component {
                     });
             })
             .catch(error=>{
-                if(error.response.status === 403) alert("Invalid user token, please log in");
-                else alert("add-to-fav: Please log in");
+                alert(error.response.data.error);
             });
     }
 
@@ -117,7 +105,6 @@ class Home extends React.Component {
 
     deleteSong = (songid) => {
         let plName = this.state.selectedPlaylist.name;
-        //console.log(plName, songid);
         if (this.state.selectedPlaylist.name === "Favorite")
             return API.delFromFav(songid, this.getToken())
                 .then(response => {
@@ -130,12 +117,10 @@ class Home extends React.Component {
                     });
                 })
                 .catch(error => {
-                    if(error.response.status === 403) alert("Invalid user token, please log in");
-                    else alert("delete-song-from-fav: Please log in");
+                    alert(error.response.data.error);
                 });
         else return API.deleteFromPlaylist(this.state.selectedPlaylist.name, songid, this.getToken())
                 .then(res=>{
-                    //console.log(res.data);
                     this.setState({
                         selectedPlaylist: {
                             name: plName,
@@ -144,8 +129,7 @@ class Home extends React.Component {
                     });
                 })
                 .catch(err=>{
-                    if(err.response.status === 403) alert("Invalid user token, please log in");
-                    else alert("delete-song: Please log in");
+                    alert(err.response.data.error);
                 });
     }
 
@@ -179,8 +163,7 @@ class Home extends React.Component {
                     });
                 })
                 .catch(err=>{
-                    if(err.response.status === 403) alert("Invalid user token, please log in");
-                    else alert("select playlist: Please log in");
+                    alert(err.response.data.error);
                 });
         }
     }
@@ -205,7 +188,7 @@ class Home extends React.Component {
                     });
                 })
                 .catch(err=>{
-                    console.log("create new playlist error: ", err);
+                    alert(err.response.data.error);
                 });
         }
         else{
@@ -218,7 +201,7 @@ class Home extends React.Component {
                         });
                     })
                     .catch(err=>{
-                        console.log("create new playlist error: ", err);
+                        alert(err.response.data.error);
                     });
             }
         }
@@ -239,15 +222,14 @@ class Home extends React.Component {
                     });
             })
             .catch(error=>{
-                if(error.response.status === 403) alert("Invalid user token, please log in");
-                else alert("add-to-playlist: Please log in");
+                alert(error.response.data.error);
             });
     }
 
     deletePlaylist = () =>{
         API.deletePlaylist(this.state.selectedPlaylist.name, this.getToken())
             .then(res=>{
-                console.log(res.data);
+                //console.log(res.data);
                 this.setState({
                     playlists: res.data.playlists,
                     isPlaylist: false,
@@ -258,7 +240,7 @@ class Home extends React.Component {
                 });
             })
             .catch(err=>{
-                console.log(err);
+                alert(err.response.data.error);
             });
     }
 
