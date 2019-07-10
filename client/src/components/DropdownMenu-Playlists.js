@@ -1,11 +1,6 @@
 import React from "react";
 
 export default (props) => {
-    // if(document.createPL){
-    //     //document.createPL.children[0].focus();
-    //     console.log(document.getElementById("createNewPLName").focus());
-    // }
-        
     return (
         <div className="dropdown-menu">
             {props.playlists.length === 0 && document.createPL &&

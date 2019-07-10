@@ -8,6 +8,8 @@ import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import Logout from "./pages/Logout";
 import Home from "./pages/Home";
+import Users from './pages/Users';
+import Songs from './pages/Songs';
 
 import API from "./utils/API";
 
@@ -25,7 +27,6 @@ class App extends React.Component {
         event.preventDefault();
 
         let inputs = event.target.children;
-        // console.log(inputs);
         let username = inputs[0].value.trim();
         let password = inputs[1].value;
         let passwordConf = inputs[2].value;
@@ -37,11 +38,11 @@ class App extends React.Component {
 
             else return API.signup({username, password})
                 .then((res) => {
-                    alert(res.data.message);
+                    alert(res.message);
                     this.setState({signed_up: true});
                 })
                 .catch(err => {
-                    if (err.response)   alert(err.response.data.error);
+                    if (err.response)   alert(err.response.error);
                 });
         }
         else{
@@ -59,17 +60,17 @@ class App extends React.Component {
 
         return API.login({username, password})
             .then(res=>{
-                if (res.data.token){
+                if (res.token){
                     this.setState({logged_in: true}, function(){
-                      localStorage.setItem('token', res.data.token);
+                      localStorage.setItem('token', res.token);
                     });
                 }
                 else{
-                    alert('you were not logged in');
+                    alert(res.error);
                 }
             })
             .catch(err=>{
-                if (err.response)   alert(err.response.data.error);
+                if (err.response)   alert(err.response.error);
             });
     }
 
@@ -89,6 +90,8 @@ class App extends React.Component {
                         <Route exact path="/login" render={()=> <Login logged_in={this.state.logged_in} login={this.login} /> } />
                         <Route exact path="/logout" component={Logout} />
                         <Route exact path="/home" render={()=> <Home logout={this.logout} />} />
+                        <Route exact path="/users" render={()=> <Users />} />
+                        <Route exact path="/songs" render={()=> <Songs />}/>
                     </Switch>
                     <Footer />
                 </div>

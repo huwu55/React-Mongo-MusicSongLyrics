@@ -31,27 +31,29 @@ class Home extends React.Component {
 
         API.userInfo(this.getToken())
             .then(res=>{
-                //res.data;
-                //console.log(res.data.favorites);
+                if(res.error)
+                    return alert(res.error);
+                    
                 let userInfo = {
-                    username: res.data.name,
-                    song: res.data.favorites[res.data.favorites.length-1],
-                    favorites: [...res.data.favorites],
-                    playlists: [...res.data.playlists],
+                    username: res.name,
+                    song: res.favorites[res.favorites.length-1],
+                    favorites: [...res.favorites],
+                    playlists: [...res.playlists],
                     isPlaylist: false,
                     selectedPlaylist: {
                         name: "Favorite",
-                        songs: [...res.data.favorites]
+                        songs: [...res.favorites]
                     }
                 };
 
-                if(res.data.favorites.length === 0)
+                if(res.favorites.length === 0)
                     userInfo.song = {};
 
                 this.setState(userInfo);
             })
             .catch(err=>{
-                if(err.response) console.log(err.response.data.error);
+                console.log(err);
+                //if(err.response) console.log(err.response.error);
             });
 
     }
@@ -68,12 +70,19 @@ class Home extends React.Component {
         this.setState({searching: true});
         return API.searchSong({artist, songName}, this.getToken())
             .then((res) => {
-                this.setState({song: res.data, searching: false});
+                //console.log(res);
+                if(res.error){
+                    this.setState({searching: false});
+
+                    return alert(res.error);
+                }
+
+                this.setState({song: res, searching: false});
             })
             .catch(error=>{
                 this.setState({searching: false});
-
-                alert(error.response.data.error);
+                console.log(error);
+                //alert(error.response.error);
             });
     }
 
@@ -82,20 +91,23 @@ class Home extends React.Component {
 
         return API.addToFav(this.state.song, this.getToken())
             .then((response)=>{
+                if(response.error)
+                    return alert(response.error);
 
                 this.setState({
-                    favorites: [...response.data.favorites],
+                    favorites: [...response.favorites],
                 });
                 if (this.state.selectedPlaylist.name === "Favorite")
                     this.setState({
                         selectedPlaylist : {
                             name: "Favorite",
-                            songs: response.data.favorites
+                            songs: response.favorites
                         }
                     });
             })
             .catch(error=>{
-                alert(error.response.data.error);
+                //alert(error.response.error);
+                console.log(error);
             });
     }
 
@@ -108,28 +120,36 @@ class Home extends React.Component {
         if (this.state.selectedPlaylist.name === "Favorite")
             return API.delFromFav(songid, this.getToken())
                 .then(response => {
+                    if(response.error)
+                        return alert(response.error);
+
                     this.setState({
-                        favorites: [...response.data.favorites],
+                        favorites: [...response.favorites],
                         selectedPlaylist : {
                             name: "Favorite",
-                            songs: response.data.favorites
+                            songs: response.favorites
                         }
                     });
                 })
                 .catch(error => {
-                    alert(error.response.data.error);
+                    //alert(error.response.error);
+                    console.log(error);
                 });
         else return API.deleteFromPlaylist(this.state.selectedPlaylist.name, songid, this.getToken())
                 .then(res=>{
+                    if(res.error)
+                        return alert(res.error);
+
                     this.setState({
                         selectedPlaylist: {
                             name: plName,
-                            songs: res.data.songs
+                            songs: res.songs
                         }
                     });
                 })
                 .catch(err=>{
-                    alert(err.response.data.error);
+                    //alert(err.response.error);
+                    console.log(err);
                 });
     }
 
@@ -154,16 +174,20 @@ class Home extends React.Component {
         else{
             API.getPlaylist(selectedPlaylist, this.getToken())
                 .then(res=>{
+                    if(res.error)
+                        return alert(res.error);
+
                     this.setState({
                         isPlaylist: true,
                         selectedPlaylist: {
                             name: selectedPlaylist,
-                            songs: res.data[0].songs
+                            songs: res[0].songs
                         }
                     });
                 })
                 .catch(err=>{
-                    alert(err.response.data.error);
+                    //alert(err.response.error);
+                    console.log(err);
                 });
         }
     }
@@ -182,26 +206,34 @@ class Home extends React.Component {
         if(!created){
             API.createPlaylist(playlistName, this.getToken())
                 .then(res=>{
+                    if(res.error)
+                        return alert(res.error);
+
                     alert("Playlist created: "+playlistName);
                     this.setState({
-                        playlists: res.data.playlists
+                        playlists: res.playlists
                     });
                 })
                 .catch(err=>{
-                    alert(err.response.data.error);
+                    //alert(err.response.error);
+                    console.log(err);
                 });
         }
         else{
             if(window.confirm("Playlist name exists, do you want to continue creating this playlist?")){
                 API.createPlaylist(playlistName, this.getToken())
                     .then(res=>{
+                        if(res.error)
+                            return alert(res.error);
+
                         alert("Playlist created: "+playlistName);
                         this.setState({
-                            playlists: res.data.playlists
+                            playlists: res.playlists
                         });
                     })
                     .catch(err=>{
-                        alert(err.response.data.error);
+                        //alert(err.response.error);
+                        console.log(err);
                     });
             }
         }
@@ -212,26 +244,31 @@ class Home extends React.Component {
 
         return API.addToPlaylist(pid, song, this.getToken())
             .then((response)=>{
+                if(response.error)
+                    return alert(response.error);
 
                 if (this.state.selectedPlaylist.name === pid)
                     this.setState({
                         selectedPlaylist:{
                             name: pid,
-                            songs: response.data.songs
+                            songs: response.songs
                         }
                     });
             })
             .catch(error=>{
-                alert(error.response.data.error);
+                //alert(error.response.error);
+                console.log(error);
             });
     }
 
     deletePlaylist = () =>{
         API.deletePlaylist(this.state.selectedPlaylist.name, this.getToken())
             .then(res=>{
-                //console.log(res.data);
+                if(res.error)
+                    return alert(res.error);
+
                 this.setState({
-                    playlists: res.data.playlists,
+                    playlists: res.playlists,
                     isPlaylist: false,
                     selectedPlaylist : {
                         name: "",
@@ -240,7 +277,8 @@ class Home extends React.Component {
                 });
             })
             .catch(err=>{
-                alert(err.response.data.error);
+                //alert(err.response.error);
+                console.log(err);
             });
     }
 

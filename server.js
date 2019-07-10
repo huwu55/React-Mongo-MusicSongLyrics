@@ -49,7 +49,7 @@ function verifyToken(req, res, next) {
 }
 
 app.post('/signup', (req, res)=>{
-
+    //console.log(req.body.username);
     db.User.find({name: req.body.username})
         .then((user) => {
             // console.log("user from db", user);  
@@ -140,7 +140,8 @@ app.post('/search', verifyToken, (req, res)=>{
     let youtubeURL = `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=1&q=${artist}+${songName}&type=video&key=${youtubeAPI}`;
 
     let lyricsURL = `https://orion.apiseeds.com/api/music/lyric/${artist}/${songName}?apikey=${lyricsAPI}`;
-
+    // console.log(youtubeURL);
+    // console.log(lyricsURL);
     fetch(youtubeURL)
         .then(res => res.json())
         .then(response => {
