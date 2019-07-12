@@ -12,6 +12,7 @@ import Users from './pages/Users';
 import Songs from './pages/Songs';
 
 import API from "./utils/API";
+import "./components/style.css";
 
 class App extends React.Component {
     constructor(){

@@ -369,6 +369,28 @@ app.delete('/playlist/song', verifyToken, (req, res)=>{
         });
 });
 
+// get all users info
+app.get('/users', (req, res)=>{
+    db.User.find({}, 'name')
+        .then(users=>{
+            res.send(users);
+        })
+        .catch(err=>{
+            console.log(err);
+            res.status(404).json({error: err});
+        })
+});
+
+// get all songs info
+app.get('/allsongs', (req, res)=>{
+    db.Song.find({}, 'name artist').then(songs=>{
+        res.send(songs);
+    }).catch(err=>{
+        console.log('allsongs:', err);
+        res.status(404).json({error: err});
+    })
+})
+
 app.get("*", function(req, res) {
     res.sendFile(path.join(__dirname, "/client/build/index.html"));
 });

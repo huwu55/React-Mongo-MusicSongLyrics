@@ -113,10 +113,16 @@ export default {
                 'Content-Type': 'application/json'
             }
         }).then(res => res.json());
-    }
+    },
 
     // list all users' usernames
-    // getUsernames : () => {
-    //     return axios.get
-    // }
+    getUsers : () => {
+        return fetch('/users')
+            .then(res => res.json());
+    },
+    getAllSongs : () => {
+        return fetch('/allsongs')
+            .then(res => res.json());
+            //.then(res=>res.text());
+    }
 };
