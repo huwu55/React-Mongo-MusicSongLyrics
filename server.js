@@ -1,12 +1,20 @@
+// express server
 const express = require("express");
+// access to database
 const mongoose = require("mongoose");
+//The Path module provides a way of working with directories and file paths.
 const path = require("path");
+
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const fetch = require('node-fetch');
+// .env file
 require("dotenv").config();
 
+// access to database
 const db = require("./models");
+
+
 const app = express();
 const PORT = process.env.PORT || 3001;
 
@@ -383,7 +391,8 @@ app.get('/users', (req, res)=>{
 
 // get all songs info
 app.get('/allsongs', (req, res)=>{
-    db.Song.find({}, 'name artist').then(songs=>{
+    db.Song.find({}, 'name artist')
+    .then(songs=>{
         res.send(songs);
     }).catch(err=>{
         console.log('allsongs:', err);
