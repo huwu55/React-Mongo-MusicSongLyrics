@@ -20,7 +20,8 @@ class App extends React.Component {
 
         this.state = {
             signed_up : false,
-            logged_in : false
+            logged_in : false,
+            demoAccount : false
         };
     }
 
@@ -76,7 +77,7 @@ class App extends React.Component {
     }
 
     logout = (event) => {        
-        this.setState({logged_in: false}, function(){
+        this.setState({logged_in: false, signed_up: false, demoAccount: false}, function(){
             localStorage.removeItem('token');
         });
     }
@@ -85,7 +86,7 @@ class App extends React.Component {
         return API.login({username:'demo', password:'demoaccount'})
             .then(res=>{
                 if (res.token){
-                    this.setState({logged_in: true, signed_up: true}, function(){
+                    this.setState({logged_in: true, signed_up: true, demoAccount: true}, function(){
                       localStorage.setItem('token', res.token);
                     });
                 }
@@ -103,7 +104,7 @@ class App extends React.Component {
             <Router>
                 <div className="app">
                     <Switch>
-                        <Route exact path="/" component={Intro} />
+                        <Route exact path="/" render={()=> <Intro logIntoDemo={this.logIntoDemo} demoAccount={this.state.demoAccount} /> } />
                         <Route exact path="/signup" render={()=> <Signup signed_up={this.state.signed_up} signup={this.signup} logIntoDemo={this.logIntoDemo} /> } />
                         <Route exact path="/login" render={()=> <Login logged_in={this.state.logged_in} login={this.login} logIntoDemo={this.logIntoDemo} /> } />
                         <Route exact path="/logout" component={Logout} />
