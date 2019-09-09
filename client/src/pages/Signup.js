@@ -15,6 +15,12 @@ export default (prop)=>{
             <Navbar />
             <div>
                 <h1 className="title">Sign Up</h1>
+                <div id='demologin'>
+                    <a href='#' onClick={()=>prop.logIntoDemo()}> 
+                        Want to try out the app without sign up/log in? <br></br>
+                        Click here to the demo account
+                    </a>
+                </div>  
                 <SignupForm signup={prop.signup} />
             </div>
         </div>

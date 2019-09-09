@@ -81,14 +81,31 @@ class App extends React.Component {
         });
     }
 
+    logIntoDemo = ()=>{
+        return API.login({username:'demo', password:'demoaccount'})
+            .then(res=>{
+                if (res.token){
+                    this.setState({logged_in: true, signed_up: true}, function(){
+                      localStorage.setItem('token', res.token);
+                    });
+                }
+                else{
+                    alert(res.error);
+                }
+            })
+            .catch(err=>{
+                if (err.response)   alert(err.response.error);
+            });
+    }
+
     render(){
         return (
             <Router>
                 <div className="app">
                     <Switch>
                         <Route exact path="/" component={Intro} />
-                        <Route exact path="/signup" render={()=> <Signup signed_up={this.state.signed_up} signup={this.signup} /> } />
-                        <Route exact path="/login" render={()=> <Login logged_in={this.state.logged_in} login={this.login} /> } />
+                        <Route exact path="/signup" render={()=> <Signup signed_up={this.state.signed_up} signup={this.signup} logIntoDemo={this.logIntoDemo} /> } />
+                        <Route exact path="/login" render={()=> <Login logged_in={this.state.logged_in} login={this.login} logIntoDemo={this.logIntoDemo} /> } />
                         <Route exact path="/logout" component={Logout} />
                         <Route exact path="/home" render={()=> <Home logout={this.logout} />} />
                         <Route exact path="/users" render={()=> <Users />} />
