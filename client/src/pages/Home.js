@@ -112,7 +112,9 @@ class Home extends React.Component {
     }
 
     playThis = (song) =>{
-        this.setState({song});
+        this.setState({song}, ()=>{
+            document.textInput.focus();
+        });
     }
 
     deleteSong = (songid) => {
@@ -287,9 +289,11 @@ class Home extends React.Component {
 
         return (
             <div>
+                <span id="anchor-video"></span>
                 <Navbar username={this.state.username} logout={this.props.logout} search={this.search} searching={this.state.searching}/>
 
                 <div className="container">
+                    <span id="anchor-video"></span>
                     <Video 
                         song={this.state.song} 
                         addToFav={this.addToFav} 

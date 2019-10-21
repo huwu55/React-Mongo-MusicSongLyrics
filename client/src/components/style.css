@@ -130,7 +130,7 @@ textarea {
     width: 300px;
 }
 
-#delPlaylist {
+.features {
     display: inline;
     margin-left: 5px;
 }

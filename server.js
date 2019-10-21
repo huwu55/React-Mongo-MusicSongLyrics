@@ -169,11 +169,11 @@ app.post('/search', verifyToken, (req, res)=>{
                     res.json(songInfo);
                 }).catch(err=>{
                     console.log("lyricsURL: lyrics not found. ",err);
-                    res.status(404).json({error: "Lyrics not found"});
+                    res.status(404).json({error: "Lyrics not found."});
                 });
         }).catch(error => {
             console.log("youtubeURL: music video not found. "+error);
-            res.status(404).json({error: "Music Video not found"});
+            res.status(404).json({error: "Music Video not found."});
         });
 });
 

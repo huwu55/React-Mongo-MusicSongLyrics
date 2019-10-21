@@ -7,16 +7,18 @@ export default (prop) => {
             <div className="card-image">
                 <img className="card-img-top" src={prop.song.thumbnail} alt={prop.song.name}></img>
                 <div className="card-btns">
-                    <button id="delPlaylist" className="btn btn-outline-light" type="button" title="Play" onClick={()=>prop.playThis({
+                    <a title="Play" href="#anchor-video" onClick={()=>prop.playThis({
                         artist: prop.song.artist,
                         name: prop.song.name,
                         thumbnail: prop.song.thumbnail,
                         video: prop.song.video,
                         lyrics: prop.song.lyrics
                     })}>
+                        <button className="features btn btn-outline-light" type="button">
                         <i className="fas fa-play"></i>
-                    </button> 
-                    <button id="delPlaylist" className="btn btn-outline-light" type="button" title="Delete" onClick={()=>prop.deleteSong(prop.song._id)}>
+                        </button>
+                    </a>
+                    <button className="features btn btn-outline-light" type="button" title="Delete" onClick={()=>prop.deleteSong(prop.song._id)}>
                         <i className="fas fa-times"></i>
                     </button> 
                 </div>
