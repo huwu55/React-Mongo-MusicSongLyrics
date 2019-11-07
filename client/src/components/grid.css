@@ -26,6 +26,7 @@
     display: grid;
     grid-auto-rows: auto;
     grid-template-columns: none;
+    grid-gap: 0.5em;
 }
 
 #playlist{
@@ -45,4 +46,15 @@
     grid-row: 2;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
+    grid-gap: 1.5em;
+}
+
+@media screen and (max-width: 1024px){
+
+}
+@media screen and (max-width: 768px){
+
+}
+@media screen and (max-width: 540px){
+
 }

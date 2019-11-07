@@ -289,7 +289,7 @@ class Home extends React.Component {
 
         return (
             <div>
-                {/* <span id="anchor-video"></span> */}
+                <span id="anchor-video"></span>
                 <Navbar username={this.state.username} logout={this.props.logout} search={this.search} searching={this.state.searching}/>
 
                 <div className="home">
