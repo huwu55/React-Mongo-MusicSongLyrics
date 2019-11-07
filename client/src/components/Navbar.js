@@ -2,7 +2,7 @@ import React from "react";
 
 export default () => {
     return (
-        <nav className="container-fluid navbar navbar-expand-lg navbar-light bg-light">
+        <nav className="navbar navbar-expand-lg navbar-light bg-light">
             <a className="navbar-brand" href="/">MusicSongLyrics</a>
 
             <div className="navbar-collapse" id="navbarNav">

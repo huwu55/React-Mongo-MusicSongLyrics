@@ -3,9 +3,11 @@ import AddToPlaylist from "./AddToPlaylist";
 
 export default (prop) => {
     return (
-        <div className="row videoinfo">
-            <div className="col-8 video">
-                <iframe id="youtube" frameBorder="0" allowFullScreen src={prop.song.video} title={prop.song.name}></iframe>
+        <div className="videoinfo">
+            <div className="video">
+                <div className='videoWrapper'>
+                    <iframe id="youtube" frameBorder="0" allowFullScreen src={prop.song.video} title={prop.song.name}></iframe>
+                </div>
                 <button type="button" title="Add to Favorites" className="fav btn btn-light" onClick={()=>prop.addToFav()}>
                     <i className="fas fa-heart"></i>
                 </button>
@@ -16,7 +18,7 @@ export default (prop) => {
                     song={prop.song}
                 />
             </div>
-            <div className="col-4 lyrics">
+            <div className="lyrics">
                 <textarea rows="20" col="1" disabled readOnly value={prop.song.lyrics}></textarea>
             </div>
         </div>

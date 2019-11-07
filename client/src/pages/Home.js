@@ -289,19 +289,18 @@ class Home extends React.Component {
 
         return (
             <div>
-                <span id="anchor-video"></span>
+                {/* <span id="anchor-video"></span> */}
                 <Navbar username={this.state.username} logout={this.props.logout} search={this.search} searching={this.state.searching}/>
 
-                <div className="container">
-                    <span id="anchor-video"></span>
+                <div className="home">
                     <Video 
                         song={this.state.song} 
                         addToFav={this.addToFav} 
                         playlists={this.state.playlists}
                         addToPlaylist={this.addToPlaylist}
                     />
-                    <div className="row collections">
-                        <span id="anchor-pl"></span>
+                    <div className="collections">
+                        {/* <span id="anchor-pl"></span> */}
                         <PlaylistBar 
                             selectPl={this.isPlaylist}
                             isPlaylist={this.state.isPlaylist}
@@ -310,7 +309,7 @@ class Home extends React.Component {
                             deletePlaylist={this.deletePlaylist}
                         />
                         {(this.state.selectedPlaylist.songs === undefined || this.state.selectedPlaylist.songs.length === 0) &&
-                            <div className="index intro col-12">
+                            <div className="index intro">
                                 <p>Looks like you don't have any song yet!</p>
                                 <p>Search a song and add it to Favorites or playlists</p>
                             </div>

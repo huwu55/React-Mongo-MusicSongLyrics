@@ -13,6 +13,8 @@ import Songs from './pages/Songs';
 
 import API from "./utils/API";
 import "./components/style.css";
+import "./components/grid.css";
+
 
 class App extends React.Component {
     constructor(){

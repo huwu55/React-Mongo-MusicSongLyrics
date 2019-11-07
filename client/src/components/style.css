@@ -65,11 +65,20 @@ input {
     padding: 5px;
 }
 
+.videoWrapper {
+    position: relative;
+    padding-top:56.25%  
+}
+
 iframe {
     width: 100%;
     height: 100%;
-    min-height: 262px;
-    height: 400px;
+    /* min-height: 262px;
+    height: 400px; */
+    position: absolute;
+    top: 0;
+    left: 0;
+
 }
 
 .fav, .fav:hover{
@@ -85,7 +94,7 @@ textarea {
     margin-top: 8px;
     width: 100%;
     text-align: center;
-    height: 400px;
+    height: 27em;
     float:right;
     /* padding: 5px 20px 15px 20px; */
     /* line-height: 1.5em; */
@@ -107,10 +116,10 @@ textarea {
 }
 
 #playlist{
-    vertical-align: middle;
+    /* vertical-align: middle; */
     /* background-color: darkgray; */
     height: 48px;
-    width: 100%;
+    /* width: 100%; */
     margin: 0;
     padding: 5px;
     background-color: rgba(0, 0, 0, 0.7);
@@ -125,18 +134,18 @@ textarea {
 }
 
 #selectPlaylist {
-    display: inline-block;
+    /* display: inline-block; */
     margin-left: 20px;
     width: 300px;
 }
 
 .features {
-    display: inline;
+    /* display: inline; */
     margin-left: 5px;
 }
 
 #createNewPL {
-    display: inline;
+    /* display: inline; */
     float: right;
 }
 
@@ -146,7 +155,7 @@ textarea {
 }
 
 .card {
-    display: inline-block;
+    /* display: inline-block; */
     margin : 15px;
 }
 /* 
@@ -166,7 +175,7 @@ textarea {
 }
 
 .card-image img:hover + .card-btns, .card-btns:hover {
-    display: inline-block;
+    /* display: inline-block; */
 }
 
 .card-body .dropright{
@@ -191,17 +200,24 @@ footer {
     width:100%;
     font-size:10pt;
     color: white;
-    bottom:0;
-    position: fixed;
-    text-align: center;
+    bottom:0px;
+    /* left: 0px;
+    right: 0px; */
+    padding-left: 40%;
     padding-top: 10px;
     padding-bottom: 5px;
+    position: absolute;
 }
 
 footer a{
+    color: black;
+}
+
+
+.visibleLink{
     color: white;
 }
-/* 
+
 footer a:hover{
     color: white;
-} */
+}
