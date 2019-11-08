@@ -33,7 +33,7 @@
     grid-row: 1;
     display: flex;
     justify-content: space-between;
-    flex-flow: row wrap;
+    flex-direction: row;
 }
 
 #playlist .wrapper{
@@ -49,12 +49,68 @@
     grid-gap: 1.5em;
 }
 
-@media screen and (max-width: 1024px){
-
+@media screen and (max-width: 1200px){
+    .video{
+        grid-column: 1 / 4;
+        grid-row: 1;
+    }
+    
+    .lyrics{
+        grid-column: 1 / 4;
+        grid-row: 2;
+        height: 18em;
+    }
 }
-@media screen and (max-width: 768px){
 
+@media screen and (max-width: 1024px){
+    .playlist{
+        grid-template-columns: repeat(2, 1fr);
+    }
+    #createNewPLName{
+        width: 10em;
+    }
+}
+
+@media screen and (max-width: 768px){
+    #playlist{
+        flex-direction: column;
+        justify-content: start;
+    }
+
+    #createNewPL{
+        padding-left:1.2em;
+    }
+
+    footer{
+        padding-left: 30%;
+    }
 }
 @media screen and (max-width: 540px){
+    /* .home{
+        grid-template-columns: repeat(12, 1fr);
+    } */
 
+    .videoinfo{
+        grid-column: 1 / span 9;
+    }
+    
+    .collections{
+        grid-column: 1 / span 9;
+    }
+
+    .playlist{
+        grid-template-columns: none;
+        /* grid-auto-columns: 18em; */
+        grid-auto-columns: 100%;
+        align-items: center;      /* new */
+        justify-items: center;
+    }
+
+    .playlist .card{
+        width: 80%;
+    }
+
+    footer{
+        display: none;
+    }
 }

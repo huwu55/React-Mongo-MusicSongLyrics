@@ -16,9 +16,10 @@ export default (props) => {
                 <button disabled={!props.isPlaylist} id="delPlaylist" className="btn btn-outline-secondary" type="button" title="Delete this playlist" onClick={()=>props.deletePlaylist()}><i className="far fa-trash-alt"></i></button>
             </div>
             <form name="createPL" id="createNewPL" className="form-inline" onSubmit={props.createNewPlaylist}>
-                <input id="createNewPLName" type="text" className="form-control" ref={ip=>{document.textInput = ip}} placeholder="Enter playlist name"></input>
-                <button className="btn btn-dark" type="submit">Create new playlist</button>
+                <input id="createNewPLName" type="text" className="form-control" ref={ip=>{document.textInput = ip}} placeholder="New Playlist"></input>
+                <button className="btn btn-dark" type="submit">Create</button>
             </form>
+            {/* <button type='button' className='btn btn-outline-light' id="createNewPLButton" title='Create new playlist'><i className="fas fa-plus"></i></button> */}
         </div>
     );
 }
