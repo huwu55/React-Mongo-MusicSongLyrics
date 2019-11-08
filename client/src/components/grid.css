@@ -60,6 +60,10 @@
         grid-row: 2;
         height: 18em;
     }
+
+    textarea{
+        background-color: rgba(0, 0, 0, 0.9);
+    }
 }
 
 @media screen and (max-width: 1024px){
@@ -104,10 +108,6 @@
         grid-auto-columns: 100%;
         align-items: center;      /* new */
         justify-items: center;
-    }
-
-    textarea{
-        background-color: rgba(0, 0, 0, 1);
     }
 
     .playlist .card{
