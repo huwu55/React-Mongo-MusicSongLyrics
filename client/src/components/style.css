@@ -90,7 +90,7 @@ textarea {
     overflow: auto; 
     resize: none;
     color: white;
-    border-color: rgba(0, 0, 0, 0);
+    border: none;
     background-color: rgba(0, 0, 0, 0.75);
 }
 
@@ -98,10 +98,10 @@ textarea {
     margin:0px;
 }
 
-.collections {
+/* .collections {
     background-color: rgba(0, 0, 0, 0.5);
 
-}
+} */
 
 #playlist{
     /* height: 48px; */
@@ -131,9 +131,10 @@ textarea {
     float: right;
 }
 
-.dropdown-menu .createPL a{
-    color: black;
+.dropdown-menu .createPL{
+    /* color: white; */
     text-decoration: none;
+    color: grey;
 }
 
 .card-body{
