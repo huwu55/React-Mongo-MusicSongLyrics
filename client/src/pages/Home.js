@@ -239,39 +239,22 @@ class Home extends React.Component {
                 created = true;
         }
 
-        if(!created){
+        if(!created || (created && window.confirm("Playlist name exists, do you want to continue creating this playlist?"))){
             API.createPlaylist(playlistName, this.getToken())
                 .then(res=>{
                     if(res.error)
                         return alert(res.error);
-
+                    let playlists = [...this.state.playlists];
+                    playlists.push(res);
                     alert("Playlist created: "+playlistName);
                     this.setState({
-                        playlists: res.playlists
+                        playlists
                     });
                 })
                 .catch(err=>{
                     //alert(err.response.error);
                     console.log(err);
                 });
-        }
-        else{
-            if(window.confirm("Playlist name exists, do you want to continue creating this playlist?")){
-                API.createPlaylist(playlistName, this.getToken())
-                    .then(res=>{
-                        if(res.error)
-                            return alert(res.error);
-
-                        alert("Playlist created: "+playlistName);
-                        this.setState({
-                            playlists: res.playlists
-                        });
-                    })
-                    .catch(err=>{
-                        //alert(err.response.error);
-                        console.log(err);
-                    });
-            }
         }
     }
 
