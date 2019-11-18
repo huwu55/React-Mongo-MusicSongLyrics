@@ -2,8 +2,8 @@ import React from "react";
 
 export default (prop) => {
     return (
-        <div id="signup" className="container intro">
-            <div className="row justify-content-md-center">
+        <div id="signup" className="intro">
+            <div class="form">
                 <form onSubmit={prop.signup}>
                     <input type="text" className="form-control" placeholder="Create Username" />
                     <input type="password" className="form-control" placeholder="Create Password" />
