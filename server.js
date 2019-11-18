@@ -231,7 +231,7 @@ app.put('/favorite/song', verifyToken, (req, res)=>{
                     })
                     .catch(err=>{
                         console.log("Error create new song:", err);
-                        res.status(404).json({error: "Error in adding new song."});
+                        res.status(404).json({error: "Error in adding new song to Favorite."});
                     });
             }
         })
@@ -328,7 +328,7 @@ function findPlaylistAndPopulateSongs(res, plID){
 }
 
 // add song to playlist
-app.post('/playlist/song', verifyToken, (req, res)=>{
+app.put('/playlist/song', verifyToken, (req, res)=>{
     let plID = req.body.plID;
     let songInfo = req.body.songInfo;
 
@@ -338,7 +338,9 @@ app.post('/playlist/song', verifyToken, (req, res)=>{
                 //$addToSet adds a value to an array unless the value is already present, in which case $addToSet does nothing to that array
                 db.Playlist.findOneAndUpdate({_id: plID}, {"$addToSet": {"songs": result[0]._id}}, { "new": true })
                     .then(playlist=>{
-                        findPlaylistAndPopulateSongs(res, plID);
+                        // findPlaylistAndPopulateSongs(res, plID);
+                        // console.log("result[0]._id", result[0]._id);
+                        res.status(200).json({message: result[0]._id});
                     })
                     .catch(err=>{
                         console.log("Error in finding and updating playlist:", err);
@@ -348,14 +350,18 @@ app.post('/playlist/song', verifyToken, (req, res)=>{
             else{
                 db.Song.create(songInfo)
                     .then(song=>{
-                        return db.Playlist.findOneAndUpdate({_id: plID}, {"$push": {"songs": song._id}}, { "new": true });
-                    })
-                    .then(pl=>{
-                        findPlaylistAndPopulateSongs(res, plID);
+                        db.Playlist.findOneAndUpdate({_id: plID}, {"$push": {"songs": song._id}}, { "new": true })
+                        .then(()=>{
+                            res.status(200).json({message: song._id});
+                        })
+                        .catch(err=>{
+                            console.log("Error create new song:", err);
+                            res.status(404).json({error: "Error in adding new song to playlist."});
+                        });
                     })
                     .catch(err=>{
                         console.log("Error create new song:", err);
-                        res.status(404).json({error: "Error in adding new song."});
+                        res.status(404).json({error: "Error in adding new song to playlist."});
                     });
             }
         })
@@ -372,7 +378,8 @@ app.delete('/playlist/song', verifyToken, (req, res)=>{
 
     db.Playlist.findOneAndUpdate({_id: plID}, {"$pull": {"songs": songID}}, { "new": true })
         .then(playlist=>{
-            findPlaylistAndPopulateSongs(res, plID);
+            // findPlaylistAndPopulateSongs(res, plID);
+            res.status(200).json({message: "Deleting song completed."});
         })
         .catch(err=>{
             console.log("Error deleting song from playlist:", err);

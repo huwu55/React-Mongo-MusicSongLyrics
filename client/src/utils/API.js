@@ -88,7 +88,7 @@ export default {
     addToPlaylist : (plID, songInfo, token) => {
         //return axios.post('/playlist/song', {plID, songInfo, token});
         return fetch('/playlist/song', {
-            method: "POST",
+            method: "PUT",
             body: JSON.stringify({plID, songInfo, token}),
             headers:{
                 'Content-Type': 'application/json'

@@ -49,6 +49,8 @@ class Home extends React.Component {
                 if(res.favorites.length === 0)
                     userInfo.song = {};
 
+                console.log(userInfo);
+
                 this.setState(userInfo);
             })
             .catch(err=>{
@@ -97,7 +99,7 @@ class Home extends React.Component {
 
                 let hasSong = false;
                 for(let i = 0; i < favorites.length; i++){
-                    if(favorites[i]._id == response.message){
+                    if(favorites[i]._id === response.message){
                         hasSong = true;
                         break;
                     }
@@ -135,46 +137,56 @@ class Home extends React.Component {
         if (this.state.selectedPlaylist.name === "Favorite"){
             let favorites = [...this.state.favorites];
             for(let i = 0; i < favorites.length; i++){
-                if(favorites[i]._id == songid){
+                if(favorites[i]._id === songid){
                     favorites.splice(i, 1);
                     break;
                 }
             }
             
-            return API.delFromFav(songid, this.getToken())
+            this.setState({
+                favorites: favorites,
+                selectedPlaylist : {
+                    name: "Favorite",
+                    songs: favorites
+                }
+            });
+
+            API.delFromFav(songid, this.getToken())
                 .then(response => {
                     if(response.error)
                         return alert(response.error);
-                        
-                    this.setState({
-                        favorites: favorites,
-                        selectedPlaylist : {
-                            name: "Favorite",
-                            songs: favorites
-                        }
-                    });
                 })
                 .catch(error => {
                     //alert(error.response.error);
                     console.log(error);
                 });
         }
-        else return API.deleteFromPlaylist(this.state.selectedPlaylist.name, songid, this.getToken())
+        else{
+            let selected = [...this.state.selectedPlaylist.songs];
+            for(let i = 0; i < selected.length; i++){
+                if(selected[i]._id === songid){
+                    selected.splice(i, 1);
+                    break;
+                }
+            }
+
+            this.setState({
+                selectedPlaylist: {
+                    name: plName,
+                    songs: selected
+                }
+            });
+
+            API.deleteFromPlaylist(this.state.selectedPlaylist.name, songid, this.getToken())
                 .then(res=>{
                     if(res.error)
                         return alert(res.error);
-
-                    this.setState({
-                        selectedPlaylist: {
-                            name: plName,
-                            songs: res.songs
-                        }
-                    });
                 })
                 .catch(err=>{
                     //alert(err.response.error);
                     console.log(err);
                 });
+        }
     }
 
     isPlaylist = (e) => {
@@ -265,19 +277,38 @@ class Home extends React.Component {
 
     addToPlaylist = (pid, song) =>{
         if (!this.state.song.name)  return alert("Search a song first");
+        // console.log(song);
 
         return API.addToPlaylist(pid, song, this.getToken())
             .then((response)=>{
                 if(response.error)
                     return alert(response.error);
 
-                if (this.state.selectedPlaylist.name === pid)
+                if (this.state.selectedPlaylist.name === pid){
+                    let selected = [...this.state.selectedPlaylist.songs];
+                    let hasSong = false;
+
+                    for(let i = 0; i < selected.length; i++){
+                        if(selected[i]._id === response.message){
+                            hasSong = true;
+                            break;
+                        }
+                    }
+
+                    if(!hasSong){
+                        if(song._id)
+                            selected.push(song);
+                        else
+                            selected.push({...song, _id: response.message});
+                    }
+
                     this.setState({
                         selectedPlaylist:{
                             name: pid,
-                            songs: response.songs
+                            songs: selected
                         }
                     });
+                }
             })
             .catch(error=>{
                 //alert(error.response.error);
