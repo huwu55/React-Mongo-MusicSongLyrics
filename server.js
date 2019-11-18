@@ -119,7 +119,7 @@ app.post('/login', (req, res)=>{
         });
 });
 
-app.post('/userInfo', verifyToken, (req, res)=>{
+app.get('/userinfo', verifyToken, (req, res)=>{
     db.User.find({name: req.decoded.username})
         .populate("favorites")
         .populate("playlists")
@@ -134,9 +134,10 @@ app.post('/userInfo', verifyToken, (req, res)=>{
 });
 
 // search song by name and artist
-app.post('/search', verifyToken, (req, res)=>{
-    let artist = req.body.songInfo.artist;
-    let songName = req.body.songInfo.songName;
+app.get('/search', verifyToken, (req, res)=>{
+    let artist = req.query.artist;
+    let songName = req.query.songName;
+
     let songInfo = {
         name : "",
         artist : "",
@@ -204,28 +205,29 @@ function findUserAndPopulateFavorite(res, username){
         });
 }
 
-// // add song to favorite
-app.post('/favorite/song', verifyToken, (req, res)=>{
+// add song to favorite
+app.put('/favorite/song', verifyToken, (req, res)=>{
     db.Song.find(req.body.songInfo)
         .then(result=>{
             if(result.length > 0){
                 //$addToSet adds a value to an array unless the value is already present, in which case $addToSet does nothing to that array
                 db.User.findOneAndUpdate({name: req.decoded.username}, {"$addToSet": {"favorites": result[0]._id}}, { "new": true })
                     .then(user=>{
-                        findUserAndPopulateFavorite(res, req.decoded.username);
+                        // findUserAndPopulateFavorite(res, req.decoded.username);
+                        res.status(200).json({message: result[0]._id});
                     })
                     .catch(err=>{
                         console.log("Error update user's favorite songs:", err);
                         res.status(404).json({error: "Error in updating user's Favorite songs."});
                     });
             }
-            else{
+            if(result.length == 0){
                 db.Song.create(req.body.songInfo)
                     .then(songInfo=>{
-                        return db.User.findOneAndUpdate({name: req.decoded.username}, {"$push": {"favorites": songInfo._id}}, { "new": true });
-                    })
-                    .then(user=>{
-                        findUserAndPopulateFavorite(res, req.decoded.username);
+                        return db.User.findOneAndUpdate({name: req.decoded.username}, {"$push": {"favorites": songInfo._id}}, { "new": true })
+                        .then(user=>{
+                            res.status(200).json({message: songInfo._id});
+                        });
                     })
                     .catch(err=>{
                         console.log("Error create new song:", err);
@@ -244,7 +246,8 @@ app.delete('/favorite/song', verifyToken, (req, res)=>{
 
     db.User.findOneAndUpdate({name: req.decoded.username}, {"$pull": {"favorites": req.body.id}}, { "new": true })
         .then(user=>{
-            findUserAndPopulateFavorite(res, req.decoded.username);
+            // findUserAndPopulateFavorite(res, req.decoded.username);
+            res.status(200).json({message: "Delete request completed."});
         })
         .catch(err=>{
             console.log("Error deleting song from favorite:", err);

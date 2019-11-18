@@ -110,7 +110,7 @@ class App extends React.Component {
                         <Route exact path="/signup" render={()=> <Signup signed_up={this.state.signed_up} signup={this.signup} logIntoDemo={this.logIntoDemo} /> } />
                         <Route exact path="/login" render={()=> <Login logged_in={this.state.logged_in} login={this.login} logIntoDemo={this.logIntoDemo} /> } />
                         <Route exact path="/logout" component={Logout} />
-                        <Route exact path="/home" render={()=> <Home logout={this.logout} />} />
+                        <Route path="/home" render={()=> <Home logout={this.logout} />} />
                         <Route exact path="/users" render={()=> <Users />} />
                         <Route exact path="/songs" render={()=> <Songs />}/>
                     </Switch>

@@ -23,22 +23,13 @@ export default {
     },
     userInfo : (token)=>{
         //return axios.post('/userInfo', {token});
-        return fetch('/userInfo', {
-            method: "POST",
-            body: JSON.stringify({token}),
-            headers:{
-                'Content-Type': 'application/json'
-            }
+        return fetch(`/userinfo?token=${token}`, {
+            method: "GET"
         }).then(res => res.json());
     },
     searchSong : (songInfo, token) => {
-        //return axios.post("/search", {songInfo, token});
-        return fetch('/search', {
-            method: "POST",
-            body: JSON.stringify({songInfo, token}),
-            headers:{
-                'Content-Type': 'application/json'
-            }
+        return fetch(`/search?token=${token}&artist=${songInfo.artist}&songName=${songInfo.songName}`, {
+            method: "GET"
         }).then(res => res.json());
     },
     // getFavorite : (token) => {
@@ -47,7 +38,7 @@ export default {
     addToFav : (songInfo, token) => {
         //return axios.post('/favorite/song', {songInfo, token});
         return fetch('/favorite/song', {
-            method: "POST",
+            method: "PUT",
             body: JSON.stringify({songInfo, token}),
             headers:{
                 'Content-Type': 'application/json'

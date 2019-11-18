@@ -66,7 +66,7 @@ class Home extends React.Component {
         let songName = inputs[1].value.trim();
 
         if (artist === "" || songName === "") return alert("Must enter both artist and song name.");
-
+        // console.log(artist, songName);
         this.setState({searching: true});
         return API.searchSong({artist, songName}, this.getToken())
             .then((res) => {
@@ -88,20 +88,33 @@ class Home extends React.Component {
 
     addToFav = () => {
         if (!this.state.song.name)  return alert("Search a song first");
-
         return API.addToFav(this.state.song, this.getToken())
             .then((response)=>{
                 if(response.error)
                     return alert(response.error);
 
+                let favorites = [...this.state.favorites];
+
+                let hasSong = false;
+                for(let i = 0; i < favorites.length; i++){
+                    if(favorites[i]._id == response.message){
+                        hasSong = true;
+                        break;
+                    }
+                }
+
+                if(!hasSong){
+                    favorites.push({...this.state.song, _id: response.message});
+                }
+
                 this.setState({
-                    favorites: [...response.favorites],
+                    favorites,
                 });
                 if (this.state.selectedPlaylist.name === "Favorite")
                     this.setState({
                         selectedPlaylist : {
                             name: "Favorite",
-                            songs: response.favorites
+                            songs: favorites
                         }
                     });
             })
@@ -119,17 +132,25 @@ class Home extends React.Component {
 
     deleteSong = (songid) => {
         let plName = this.state.selectedPlaylist.name;
-        if (this.state.selectedPlaylist.name === "Favorite")
+        if (this.state.selectedPlaylist.name === "Favorite"){
+            let favorites = [...this.state.favorites];
+            for(let i = 0; i < favorites.length; i++){
+                if(favorites[i]._id == songid){
+                    favorites.splice(i, 1);
+                    break;
+                }
+            }
+            
             return API.delFromFav(songid, this.getToken())
                 .then(response => {
                     if(response.error)
                         return alert(response.error);
-
+                        
                     this.setState({
-                        favorites: [...response.favorites],
+                        favorites: favorites,
                         selectedPlaylist : {
                             name: "Favorite",
-                            songs: response.favorites
+                            songs: favorites
                         }
                     });
                 })
@@ -137,6 +158,7 @@ class Home extends React.Component {
                     //alert(error.response.error);
                     console.log(error);
                 });
+        }
         else return API.deleteFromPlaylist(this.state.selectedPlaylist.name, songid, this.getToken())
                 .then(res=>{
                     if(res.error)
