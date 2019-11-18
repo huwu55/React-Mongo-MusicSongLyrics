@@ -2,7 +2,9 @@
 
 For users to search songs, enjoy watching music videos, and sing along with lyrics. This is a single page application that uses react-router-dom to navigate, hide and show React components without changing routes within Express. Users are be able to sign up and log in, and manage songs by adding them to Favorites or to created playlists.
 
-![MusicSongLyrics logged in photo](photo/logedin.png)
+|Laptop | Ipad | Phone |
+|--- | --- | --- |
+|![Laptop screen size](photo/home.png) | ![Width size max 1024px](photo/ipadSizeHome.png) | ![Phone screen size](photo/phoneHome.png) |
 
 ## Getting Started
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
@@ -23,6 +25,15 @@ Then run the command below to change directory to client and install React proje
 ```
 install
 ```
+
+## Built With 
+* React v16.8.4
+* Node Fetch v2.6.0
+* bcryptjs v2.4.3
+* express v4.16.4
+* Json Web token  v8.5.0
+* Mongoose v5.4.18
+* MongoDB v4.0.5
 
 ### Database Set Up
 Use Mongodb, and Mongoose to access database
@@ -56,22 +67,14 @@ yarn start
 ```
 React is running on port 3000. Open your browser and visit http://localhost:3000.
 
-### Usage Example
+## Features
 * This is a single page application that uses `react-router-dom` to navigate, hide and show React components without changing routes within Express.
 * Users have to sign up to create accounts in order to log in and search songs and lyrics.
 * Create jwt token and stored in local storage when users log in.
 
-<p align="center">
-  <img width="500" height="284" src="./photo/cover.png" alt="MusicSongLyrics Cover page">
-</p>
-
-<p align="center">
-  <img width="500" height="284" src="./photo/signup.png" alt="MusicSongLyrics sign up page">
-</p>
-
-<p align="center">
-  <img width="500" height="284" src="./photo/login.png" alt="MusicSongLyrics login page">
-</p>
+| Welcome | Sign Up | Log In |
+| --- | --- | --- |
+| ![welcome page](photo/msl.png) | ![sign up page](photo/signup.png) | ![log in page](photo/login.png) |
 
 After user logs in 
 * Client side:
@@ -79,6 +82,7 @@ After user logs in
     * add current song to Favorite or existing playlists
     * select playlist to see collections
     * create new playlists
+    * manage songs in Favorite by adding songs to other playlists or deleting songs.
 * Server side:
     * verify jwt token and decode token to get username as middleware 
     * interact with database based on requests made
@@ -86,22 +90,14 @@ After user logs in
         * create new playlist, delete existing playlist
         * add song to existing playlist, remove song from existing playlist
 
-<p align="center">
-  <img width="500" height="284" src="./photo/addToPlaylist.png" alt="MusicSongLyrics add to playlist">
-</p>
-
-<p align="center">
-  <img width="500" height="284" src="./photo/selectPlaylist.png" alt="MusicSongLyrics select playlist">
-</p>
-
-<p align="center">
-  <img width="500" height="284" src="./photo/favorite.png" alt="MusicSongLyrics Favorites">
-</p>
+| Create/Select playlist | Add song to playlist | Manage songs in Favorites |
+| --- | --- | --- |
+| ![Create/Select playlist](photo/selectPlaylist.png) | ![Add song to playlist](photo/addSong.png) | ![Manage songs in Favorites](photo/manageSongs.png) |
 
 * when user logs out, jwt token that stored in local storage destroys.
 
 <p align="center">
-  <img width="500" height="284" src="./photo/logout.png" alt="MusicSongLyrics logged out">
+  <img width="200" height="113" src="./photo/logout.png" alt="MusicSongLyrics logged out">
 </p>
 
 ## Deployed to Heroku
