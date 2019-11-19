@@ -74,7 +74,7 @@ React is running on port 3000. Open your browser and visit http://localhost:3000
 
 | Welcome | Sign Up | Log In |
 | --- | --- | --- |
-| ![welcome page](photo/msl.png) | ![sign up page](photo/signup.png) | ![log in page](photo/login.png) |
+| ![welcome page](photo/MSL.png) | ![sign up page](photo/signup.png) | ![log in page](photo/login.png) |
 
 After user logs in 
 * Client side:
