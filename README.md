@@ -90,14 +90,26 @@ After user logs in
         * create new playlist, delete existing playlist
         * add song to existing playlist, remove song from existing playlist
 
-| Create/Select playlist | Add song to playlist | Manage songs in Favorites |
+<!-- | Create/Select playlist | Add song to playlist | Manage songs in Favorites |
 | --- | --- | --- |
-| ![Create/Select playlist](photo/selectPlaylist.png) | ![Add song to playlist](photo/addSong.png) | ![Manage songs in Favorites](photo/manageSongs.png) |
+| ![Create/Select playlist](photo/selectPlaylist.png) | ![Add song to playlist](photo/addSong.png) | ![Manage songs in Favorites](photo/manageSongs.png) | -->
+
+<p align="center">
+  <img width="500" height="282" src="./photo/selectPlaylist.png" alt="Create/Select playlist">
+</p>
+
+<p align="center">
+  <img width="500" height="282" src="./photo/addSong.png" alt="Add song to playlist">
+</p>
+
+<p align="center">
+  <img width="500" height="282" src="./photo/manageSongs.png" alt="Manage songs in Favorites">
+</p>
 
 * when user logs out, jwt token that stored in local storage destroys.
 
 <p align="center">
-  <img width="200" height="113" src="./photo/logout.png" alt="MusicSongLyrics logged out">
+  <img width="250" height="148" src="./photo/logout.png" alt="MusicSongLyrics logged out">
 </p>
 
 ## Deployed to Heroku
