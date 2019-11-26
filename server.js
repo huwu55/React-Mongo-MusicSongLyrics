@@ -95,7 +95,7 @@ app.post('/signup', (req, res)=>{
 app.post('/login', (req, res)=>{
     db.User.find({name: req.body.username})
         .then(user => {
-
+            //console.log(user[0].numCheckIn, Date(Date.now()).toString());
             if(user.length == 0) 
                 return res.status(404).json({ error: 'User not found' });
 
@@ -107,11 +107,23 @@ app.post('/login', (req, res)=>{
                 username: user[0].name,
             };
 
-            jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '4h' }, (err, token)=>{
-                if(err) return res.status(401).json({ error: err});
+            let numCheckIn = user[0].numCheckIn + 1;
+            let checkInDates = [...user[0].checkInDates];
+            checkInDates.push(Date(Date.now()).toString());
+            let update ={numCheckIn, checkInDates};
 
-                return res.json({token});
-            });
+            db.User.findOneAndUpdate({name: req.body.username}, update, {"new": true})
+                .then(user=>{
+                    //console.log(user);
+
+                    jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '4h' }, (err, token)=>{
+                        if(err) return res.status(401).json({ error: err});
+
+                        return res.json({token});
+                    });
+                });
+
+
         })
         .catch(err =>{
             console.log("error", err);
@@ -402,6 +414,16 @@ app.get('/allsongs', (req, res)=>{
         console.log('allsongs:', err);
         res.status(404).json({error: err});
     })
+});
+
+app.get('/checkIns', (req, res)=>{
+    db.User.find({}, 'name numCheckIn checkInDates')
+        .then(users=>{
+            res.send(users);
+        }).catch(err=>{
+            console.log("checkIns:", err);
+            res.status(404).json({error: err});
+        });
 })
 
 app.get("*", function(req, res) {

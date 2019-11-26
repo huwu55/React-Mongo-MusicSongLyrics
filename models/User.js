@@ -20,6 +20,16 @@ var UserSchema = new Schema({
             type: Schema.Types.ObjectId,
             ref: "Playlist"
         }
+    ],
+    numCheckIn : {
+        type: Number,
+        default : 0
+    },
+    checkInDates : [
+        {
+            type: Date,
+            default: Date.now()
+        }
     ]
 });
 

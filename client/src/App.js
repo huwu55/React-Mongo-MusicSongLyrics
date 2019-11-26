@@ -10,6 +10,7 @@ import Logout from "./pages/Logout";
 import Home from "./pages/Home";
 import Users from './pages/Users';
 import Songs from './pages/Songs';
+import CheckIns from './pages/CheckIns';
 
 import API from "./utils/API";
 import "./components/style.css";
@@ -113,6 +114,7 @@ class App extends React.Component {
                         <Route path="/home" render={()=> <Home logout={this.logout} />} />
                         <Route exact path="/users" render={()=> <Users />} />
                         <Route exact path="/songs" render={()=> <Songs />}/>
+                        <Route exact path='/checkIns' render={() => <CheckIns />} />
                     </Switch>
                     <Footer />
                 </div>

@@ -28,7 +28,7 @@ class Home extends React.Component {
     }
 
     componentDidMount(){
-
+        //console.log(window.location.href);
         API.userInfo(this.getToken())
             .then(res=>{
                 if(res.error)
@@ -49,7 +49,7 @@ class Home extends React.Component {
                 if(res.favorites.length === 0)
                     userInfo.song = {};
 
-                console.log(userInfo);
+                //console.log(userInfo);
 
                 this.setState(userInfo);
             })

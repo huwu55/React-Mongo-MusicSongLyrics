@@ -10,6 +10,7 @@ export default {
                 'Content-Type': 'application/json'
             }
         }).then(res => res.json());
+
     },
     login : (user) => {
         //return axios.post('/login', user);
@@ -20,6 +21,7 @@ export default {
                 'Content-Type': 'application/json'
             }
         }).then(res => res.json());
+
     },
     userInfo : (token)=>{
         //return axios.post('/userInfo', {token});
@@ -115,5 +117,9 @@ export default {
         return fetch('/allsongs')
             .then(res => res.json());
             //.then(res=>res.text());
+    },
+    getCheckIns : () =>{
+        return fetch('/checkIns')
+            .then(res => res.json());
     }
 };
