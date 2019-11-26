@@ -109,7 +109,8 @@ app.post('/login', (req, res)=>{
 
             let numCheckIn = user[0].numCheckIn + 1;
             let checkInDates = [...user[0].checkInDates];
-            checkInDates.push(Date(Date.now()).toString());
+            checkInDates.push(Date().toString());
+            console.log(checkInDates[checkInDates.length - 1]);
             let update ={numCheckIn, checkInDates};
 
             db.User.findOneAndUpdate({name: req.body.username}, update, {"new": true})

@@ -27,8 +27,8 @@ var UserSchema = new Schema({
     },
     checkInDates : [
         {
-            type: Date,
-            default: Date.now()
+            type: String
+            //default: Date.now()
         }
     ]
 });
