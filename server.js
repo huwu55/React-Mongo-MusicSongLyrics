@@ -109,8 +109,22 @@ app.post('/login', (req, res)=>{
 
             let numCheckIn = user[0].numCheckIn + 1;
             let checkInDates = [...user[0].checkInDates];
-            checkInDates.push(Date().toString());
-            console.log(checkInDates[checkInDates.length - 1]);
+            //checkInDates.push(Date().toString());
+
+            // get current utc time and convert it to pst time
+            let date = new Date();
+            let pstDate = new Date(Date.UTC(date.getUTCFullYear(),
+                date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(),
+                date.getUTCMinutes(), date.getUTCSeconds(), date.getUTCMilliseconds()));
+            pstDate.setHours(pstDate.getHours()-8);
+            // console.log(date.getUTCFullYear(),
+            // date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(),
+            // date.getUTCMinutes(), date.getUTCSeconds(), date.getUTCMilliseconds());
+            // console.log(pstDate);
+            
+            checkInDates.push(pstDate.toJSON());
+
+            //console.log(checkInDates[checkInDates.length - 1]);
             let update ={numCheckIn, checkInDates};
 
             db.User.findOneAndUpdate({name: req.body.username}, update, {"new": true})
